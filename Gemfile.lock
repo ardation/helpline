@@ -67,6 +67,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
+    acts-as-taggable-on (6.5.0)
+      activerecord (>= 5.0, < 6.1)
     arbre (1.2.1)
       activesupport (>= 3.0.0)
     ast (2.4.0)
@@ -106,6 +108,8 @@ GEM
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.6.0)
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     graphql (1.10.4)
@@ -260,6 +264,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    shoulda-matchers (4.3.0)
+      activesupport (>= 4.2.0)
     spring (2.1.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -291,6 +297,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  acts-as-taggable-on (~> 6.0)
   awesome_print
   bootsnap (>= 1.4.2)
   database_cleaner-active_record
@@ -298,6 +305,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faker
+  friendly_id (~> 5.2.4)
   graphql
   graphql-batch
   listen (>= 3.0.5, < 3.2)
@@ -309,6 +317,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails
   rubocop-rspec
+  shoulda-matchers
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)

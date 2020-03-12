@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class GraphqlController < APIController
-  protect_from_forgery with: :null_session
-
+class GraphqlController < ApiController
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]

@@ -13,3 +13,18 @@ Style/Documentation:
   Enabled: false
 Rails/FilePath:
   EnforcedStyle: arguments
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**/*
+Metrics/AbcSize:
+  Exclude:
+    - db/migrate/**/*
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - db/migrate/**/*
+Metrics/PerceivedComplexity:
+  Exclude:
+    - db/migrate/**/*
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
