@@ -3,8 +3,8 @@
 class CreateOrganizations < ActiveRecord::Migration[6.0]
   def change
     create_table :organizations, id: :uuid do |t|
-      t.string :name
-      t.string :country_code
+      t.string :name, null: false
+      t.string :country_code, null: false, index: true
       t.string :region
       t.string :phone_word
       t.string :phone_number
@@ -12,7 +12,6 @@ class CreateOrganizations < ActiveRecord::Migration[6.0]
       t.string :sms_number
       t.string :chat_url
       t.string :url
-      t.boolean :all_hours
       t.string :slug
 
       t.timestamps

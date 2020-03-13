@@ -8,6 +8,7 @@ ruby '2.6.5'
 gem 'activeadmin'
 gem 'acts-as-taggable-on', '~> 6.0'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'countries'
 gem 'devise'
 gem 'friendly_id', '~> 5.2.4'
 gem 'graphql'
@@ -18,7 +19,6 @@ gem 'rails', '~> 6.0.2'
 
 group :test do
   gem 'database_cleaner-active_record'
-  gem 'faker'
   gem 'shoulda-matchers'
 end
 
@@ -26,6 +26,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rspec-rails'

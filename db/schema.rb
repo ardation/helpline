@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_191958) do
+ActiveRecord::Schema.define(version: 2020_03_13_205241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,9 +42,20 @@ ActiveRecord::Schema.define(version: 2020_03_12_191958) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
+  create_table "organization_opening_hours", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.integer "day", null: false
+    t.time "open", null: false
+    t.time "close", null: false
+    t.string "timezone", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_organization_opening_hours_on_organization_id"
+  end
+
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "country_code"
+    t.string "name", null: false
+    t.string "country_code", null: false
     t.string "region"
     t.string "phone_word"
     t.string "phone_number"
@@ -52,10 +63,10 @@ ActiveRecord::Schema.define(version: 2020_03_12_191958) do
     t.string "sms_number"
     t.string "chat_url"
     t.string "url"
-    t.boolean "all_hours"
     t.string "slug"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["country_code"], name: "index_organizations_on_country_code"
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end
 
@@ -98,5 +109,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_191958) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "organization_opening_hours", "organizations"
   add_foreign_key "taggings", "tags"
 end
