@@ -7,7 +7,7 @@ module Queries
     type [Types::TagType], null: false
 
     def resolve
-      Organization.issue_counts
+      Organization.issue_counts.order(:name)
     end
   end
 end

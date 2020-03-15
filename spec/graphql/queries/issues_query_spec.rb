@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Queries::IssuesQuery, type: :request do
   before do
-    create(:organization, issue_list: ['issue_0'])
-    create(:organization, issue_list: ['issue_1'])
+    create(:organization, issue_list: ['issue_def'])
+    create(:organization, issue_list: ['issue_abc'])
   end
 
   describe '.resolve' do
@@ -14,7 +14,7 @@ RSpec.describe Queries::IssuesQuery, type: :request do
     it 'returns issues' do
       post '/graphql', params: { query: query }
 
-      expect(data).to match_array [{ 'name' => 'issue_0' }, { 'name' => 'issue_1' }]
+      expect(data).to eq [{ 'name' => 'issue_abc' }, { 'name' => 'issue_def' }]
     end
   end
 

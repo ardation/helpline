@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Queries::CategoriesQuery, type: :request do
   before do
-    create(:organization, category_list: ['category_0'])
-    create(:organization, category_list: ['category_1'])
+    create(:organization, category_list: ['category_def'])
+    create(:organization, category_list: ['category_abc'])
   end
 
   describe '.resolve' do
@@ -14,7 +14,7 @@ RSpec.describe Queries::CategoriesQuery, type: :request do
     it 'returns categories' do
       post '/graphql', params: { query: query }
 
-      expect(data).to match_array [{ 'name' => 'category_0' }, { 'name' => 'category_1' }]
+      expect(data).to eq [{ 'name' => 'category_abc' }, { 'name' => 'category_def' }]
     end
   end
 

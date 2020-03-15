@@ -7,7 +7,7 @@ module Queries
     type [Types::TagType], null: false
 
     def resolve
-      Organization.human_support_type_counts
+      Organization.human_support_type_counts.order(:name)
     end
   end
 end
