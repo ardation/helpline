@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Queries::OrganizationQuery, type: :request do
+  before { host! 'api.example.com' }
+
   let(:organization) { create(:organization, :complete) }
   let!(:opening_hour) { create(:organization_opening_hour, organization: organization) }
 
@@ -38,7 +40,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
     end
 
     it 'returns organization for provided slug' do
-      post '/graphql', params: { query: query(slug: organization.slug) }
+      post '/', params: { query: query(slug: organization.slug) }
       expect(data).to include(attributes)
     end
   end

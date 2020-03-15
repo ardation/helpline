@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Queries::OrganizationsQuery, type: :request do
+  before { host! 'api.example.com' }
+
   let!(:organization_0) do
     create(
       :organization,
@@ -28,7 +30,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     let(:attributes_1) { { 'id' => organization_1.id } }
 
     it 'returns organizations' do
-      post '/graphql', params: { query: query }
+      post '/', params: { query: query }
 
       expect(data).to match_array [
         hash_including(attributes_0),
@@ -37,7 +39,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
 
     it 'returns organizations filtered by country_code' do
-      post '/graphql', params: { query: query('(countryCode: "AU")') }
+      post '/', params: { query: query('(countryCode: "AU")') }
 
       expect(data).to match_array [
         hash_including(attributes_0)
@@ -45,7 +47,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
 
     it 'returns organizations filtered by categories' do
-      post '/graphql', params: { query: query('(categories: ["category_0"])') }
+      post '/', params: { query: query('(categories: ["category_0"])') }
 
       expect(data).to match_array [
         hash_including(attributes_0)
@@ -53,7 +55,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
 
     it 'returns organizations filtered by human_support_type' do
-      post '/graphql', params: { query: query('(humanSupportTypes: ["human_support_type_0"])') }
+      post '/', params: { query: query('(humanSupportTypes: ["human_support_type_0"])') }
 
       expect(data).to match_array [
         hash_including(attributes_0)
@@ -61,7 +63,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
 
     it 'returns organizations filtered by issues' do
-      post '/graphql', params: { query: query('(issues: ["issue_0"])') }
+      post '/', params: { query: query('(issues: ["issue_0"])') }
 
       expect(data).to match_array [
         hash_including(attributes_0)

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Queries::IssuesQuery, type: :request do
   before do
+    host! 'api.example.com'
     create(:organization, issue_list: ['issue_def'])
     create(:organization, issue_list: ['issue_abc'])
   end
@@ -12,7 +13,7 @@ RSpec.describe Queries::IssuesQuery, type: :request do
     let(:data) { JSON.parse(response.body)['data']['issues'] }
 
     it 'returns issues' do
-      post '/graphql', params: { query: query }
+      post '/', params: { query: query }
 
       expect(data).to eq [{ 'name' => 'issue_abc' }, { 'name' => 'issue_def' }]
     end
