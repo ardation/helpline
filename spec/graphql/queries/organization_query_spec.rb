@@ -21,9 +21,12 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'smsWord' => organization.sms_word,
         'smsNumber' => organization.sms_number,
         'region' => organization.region,
-        'categoryList' => match_array(organization.category_list),
-        'humanSupportTypeList' => match_array(organization.human_support_type_list),
-        'issueList' => match_array(organization.issue_list),
+        'categories' =>
+          match_array(organization.categories.map { |t| { 'name' => t.name } }),
+        'humanSupportTypes' =>
+          match_array(organization.human_support_types.map { |t| { 'name' => t.name } }),
+        'issues' =>
+          match_array(organization.issues.map { |t| { 'name' => t.name } }),
         'openingHours' => [{
           'id' => opening_hour.id,
           'timezone' => opening_hour.timezone,
@@ -55,9 +58,15 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           phoneNumber
           smsWord
           smsNumber
-          categoryList
-          humanSupportTypeList
-          issueList
+          categories {
+            name
+          }
+          humanSupportTypes {
+            name
+          }
+          issues {
+            name
+          }
           openingHours {
             id
             timezone

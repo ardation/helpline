@@ -3,27 +3,29 @@
 require 'rails_helper'
 
 RSpec.describe Queries::OrganizationsQuery, type: :request do
-  let!(:organization_0) { create(:organization, country_code: 'AU') }
-  let!(:organization_1) { create(:organization, country_code: 'NZ') }
+  let!(:organization_0) do
+    create(
+      :organization,
+      country_code: 'AU',
+      category_list: ['category_0'],
+      human_support_type_list: ['human_support_type_0'],
+      issue_list: ['issue_0']
+    )
+  end
+  let!(:organization_1) do
+    create(
+      :organization,
+      country_code: 'NZ',
+      category_list: ['category_1'],
+      human_support_type_list: ['human_support_type_1'],
+      issue_list: ['issue_1']
+    )
+  end
 
   describe '.resolve' do
     let(:data) { JSON.parse(response.body)['data']['organizations']['nodes'] }
-    let(:attributes_0) do
-      {
-        'id' => organization_0.id,
-        'name' => organization_0.name,
-        'slug' => organization_0.slug,
-        'countryCode' => organization_0.country_code
-      }
-    end
-    let(:attributes_1) do
-      {
-        'id' => organization_1.id,
-        'name' => organization_1.name,
-        'slug' => organization_1.slug,
-        'countryCode' => organization_1.country_code
-      }
-    end
+    let(:attributes_0) { { 'id' => organization_0.id } }
+    let(:attributes_1) { { 'id' => organization_1.id } }
 
     it 'returns organizations' do
       post '/graphql', params: { query: query }
@@ -35,7 +37,31 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
 
     it 'returns organizations filtered by country_code' do
-      post '/graphql', params: { query: query_by_country_code('AU') }
+      post '/graphql', params: { query: query('(countryCode: "AU")') }
+
+      expect(data).to match_array [
+        hash_including(attributes_0)
+      ]
+    end
+
+    it 'returns organizations filtered by categories' do
+      post '/graphql', params: { query: query('(categories: ["category_0"])') }
+
+      expect(data).to match_array [
+        hash_including(attributes_0)
+      ]
+    end
+
+    it 'returns organizations filtered by human_support_type' do
+      post '/graphql', params: { query: query('(humanSupportTypes: ["human_support_type_0"])') }
+
+      expect(data).to match_array [
+        hash_including(attributes_0)
+      ]
+    end
+
+    it 'returns organizations filtered by issues' do
+      post '/graphql', params: { query: query('(issues: ["issue_0"])') }
 
       expect(data).to match_array [
         hash_including(attributes_0)
@@ -43,30 +69,12 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     end
   end
 
-  def query
+  def query(filter = '')
     <<~GQL
       query {
-        organizations {
+        organizations#{filter} {
           nodes {
             id
-            name
-            slug
-            countryCode
-          }
-        }
-      }
-    GQL
-  end
-
-  def query_by_country_code(country_code)
-    <<~GQL
-      query {
-        organizations(countryCode: "#{country_code}") {
-          nodes {
-            id
-            name
-            slug
-            countryCode
           }
         }
       }

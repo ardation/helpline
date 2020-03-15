@@ -2,6 +2,9 @@
 
 module Types
   class QueryType < Types::BaseObject
+    field :categories, resolver: Queries::CategoriesQuery
+    field :human_support_types, resolver: Queries::HumanSupportTypesQuery
+    field :issues, resolver: Queries::IssuesQuery
     field :organization, resolver: Queries::OrganizationQuery
     field :organizations, resolver: Queries::OrganizationsQuery
   end
