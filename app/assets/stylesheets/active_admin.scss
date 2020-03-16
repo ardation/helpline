@@ -4,3 +4,57 @@ $am-theme-accent-fallback: #ff7547;
 
 @import 'activeadmin_addons/all';
 @import 'activeadmin_addons/material';
+
+.columns {
+  display: grid;
+  grid-auto-flow: column;
+  .column {
+    width: 100% !important;
+  }
+  div:last-child {
+    display: none;
+  }
+}
+#search_status_sidebar_section {
+  .panel_contents {
+    padding: 0 20px 10px;
+  }
+}
+.input.string.select_and_search input {
+  margin-left: 10px;
+}
+.select2-container--default {
+  .select2-selection--single {
+    border: 1px solid #d3d3d3;
+  }
+  &.select2-container--open {
+    .select2-selection--single,
+    .select2-dropdown {
+      border-color: $am-theme-primary;
+    }
+  }
+  &.select2-container--focus,
+  .select2-search__field:focus {
+    outline: 0 !important;
+  }
+}
+
+.select2-container {
+  .select2-selection--multiple {
+    height: 42px;
+    border: 1px solid #d3d3d3;
+    .select2-selection__choice {
+      line-height: 28px;
+    }
+  }
+  .select2-search--inline .select2-search__field {
+    line-height: 30px;
+  }
+  &.select2-container--open,
+  &.select2-container--focus {
+    .select2-selection--multiple,
+    .select2-dropdown {
+      border-color: $am-theme-primary;
+    }
+  }
+}

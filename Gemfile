@@ -34,6 +34,8 @@ group :development, :test do
 end
 
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
