@@ -2,21 +2,31 @@
 
 ActiveAdmin.register Organization do
   permit_params :name, :country_code, :region, :category_list, :human_support_type_list, :issue_list,
-                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url
+                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes
 
   filter :name
   filter :country_code,
          as: :select,
          collection: ISO3166::Country.all.map { |c| [c.name, c.alpha2] }.sort { |a, b| a[0] <=> b[0] },
          label: 'Country'
-  filter :categories, collection: Organization.category_counts.order(:name)
-  filter :human_support_types, collection: Organization.human_support_type_counts.order(:name)
-  filter :issues, collection: Organization.issue_counts.order(:name)
+
+  action_item only: :index do
+    link_to 'Import from CSV', action: 'upload_csv'
+  end
+
+  collection_action :upload_csv do
+    render 'admin/organizations/upload_csv'
+  end
+
+  collection_action :import_csv, method: :post do
+    Organization::CsvImportService.import(params[:csv][:file])
+    redirect_to action: :index, notice: 'CSV imported successfully!'
+  end
 
   index do
     selectable_column
     column :id, sortable: :slug do |organization|
-      link_to organization.slug, organization_path(organization)
+      link_to organization.slug.truncate(20), organization_path(organization)
     end
     column :name
     column :country, sortable: :country_code do |organization|
@@ -43,6 +53,7 @@ ActiveAdmin.register Organization do
       row :categories
       row :human_support_types
       row :issues
+      row :notes
     end
   end
 
@@ -61,15 +72,20 @@ ActiveAdmin.register Organization do
           input :category_list,
                 as: :tags,
                 collection: Organization.category_counts.order(:name).pluck(:name),
-                input_html: { 'data-width' => '100%' }
+                input_html: { 'data-width' => '100%' },
+                label: 'Categories'
           input :human_support_type_list,
                 as: :tags,
                 collection: Organization.human_support_type_counts.order(:name).pluck(:name),
-                input_html: { 'data-width' => '100%' }
+                input_html: { 'data-width' => '100%' },
+                label: 'Human Support Types'
           input :issue_list,
                 as: :tags,
                 collection: Organization.issue_counts.order(:name).pluck(:name),
-                input_html: { 'data-width' => '100%' }
+                input_html: { 'data-width' => '100%' },
+                label: 'Issues'
+          input :notes,
+                input_html: { rows: 5 }
         end
       end
       column do

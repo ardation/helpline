@@ -319,7 +319,9 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-  config.footer = ''
+  # rubocop:disable Rails/OutputSafety
+  config.footer = ->(_a) { "#{Time.zone.today.year} &copy; Live For Tomorrow".html_safe }
+  # rubocop:enable Rails/OutputSafety
 
   # == Sorting
   #

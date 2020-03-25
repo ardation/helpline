@@ -1,0 +1,47 @@
+<%= semantic_form_for :csv,
+                      url: import_csv_organizations_path,
+                      html: { multipart: true },
+                      builder: ActiveAdmin::FormBuilder do |f| %>
+  <div class="panel">
+    <%= f.inputs 'Details' do %>
+      <li class="input">
+        <strong>A CSV file with the following column headings is required:</strong>
+        <ul>
+          <li>
+            country_code
+            <br><small><em>ISO3166 Two character country code</em></small>
+            </li>
+          <li>region</li>
+          <li>name</li>
+          <li>phone_word</li>
+          <li>phone_number</li>
+          <li>sms_word</li>
+          <li>sms_number</li>
+          <li>
+            chat_url
+            <br><small><em>full URL including http(s)://</em></small>
+          </li>
+          <li>
+            url
+            <br><small><em>full URL including http(s)://</em></small>
+          </li>
+          <li>notes</li>
+          <li>
+            human_support_type_list
+            <br><small><em>tags separated with a comma</em></small>
+          </li>
+          <li>
+            issue_list
+            <br><small><em>tags separated with a comma</em></small>
+          </li>
+          <li>
+            category_list
+            <br><small><em>tags separated with a comma</em></small>
+          </li>
+        </ul>
+      </li>
+      <%= f.input :file, as: :file %>
+    <% end %>
+    <%= f.actions %>
+  </div>
+<% end %>
