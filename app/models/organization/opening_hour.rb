@@ -3,9 +3,8 @@
 class Organization
   class OpeningHour < ApplicationRecord
     belongs_to :organization
-    validates :close, :open, :timezone, presence: true
-    validates :day, inclusion: { in: 1..7 }
-    validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }
+    validates :close, :open, presence: true
+    validates :day, inclusion: { in: 1..7 }, uniqueness: { scope: :organization_id }
     validate :open_before_close
 
     protected

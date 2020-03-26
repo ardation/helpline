@@ -16,6 +16,7 @@ module Types
     field :region, String, null: true
     field :sms_number, String, null: true
     field :sms_word, String, null: true
+    field :timezone, String, null: false
     field :url, String, null: true
     field :opening_hours, [Types::Organization::OpeningHourType], null: false
 

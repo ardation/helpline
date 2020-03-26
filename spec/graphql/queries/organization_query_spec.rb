@@ -31,7 +31,6 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           match_array(organization.issues.map { |t| { 'name' => t.name } }),
         'openingHours' => [{
           'id' => opening_hour.id,
-          'timezone' => opening_hour.timezone,
           'open' => opening_hour.open.iso8601,
           'close' => opening_hour.close.iso8601,
           'day' => opening_hour.day
@@ -60,6 +59,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           phoneNumber
           smsWord
           smsNumber
+          timezone
           categories {
             name
           }
@@ -71,7 +71,6 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           }
           openingHours {
             id
-            timezone
             open
             close
             day

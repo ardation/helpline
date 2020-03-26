@@ -19,7 +19,8 @@ RSpec.describe Organization::CsvImportService, type: :service do
         'chat_url' => 'https://www.youthline.co.nz/web-chat-counselling.html',
         'url' => 'https://www.youthline.co.nz',
         'slug' => 'youthline',
-        'notes' => 'no notes needed'
+        'notes' => 'no notes needed',
+        'timezone' => 'Auckland'
       }
     end
 

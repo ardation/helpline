@@ -9,4 +9,5 @@ class Organization < ApplicationRecord
   validates :country_code, presence: true, inclusion: { in: ISO3166::Country.all.map(&:alpha2) }
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :chat_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
+  validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }, presence: true
 end

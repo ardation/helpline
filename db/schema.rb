@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_203448) do
+ActiveRecord::Schema.define(version: 2020_03_26_044744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -33,9 +33,9 @@ ActiveRecord::Schema.define(version: 2020_03_25_203448) do
     t.integer "day", null: false
     t.time "open", null: false
     t.time "close", null: false
-    t.string "timezone", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id", "day"], name: "index_organization_opening_hours_on_organization_id_and_day", unique: true
     t.index ["organization_id"], name: "index_organization_opening_hours_on_organization_id"
   end
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_203448) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "notes"
+    t.string "timezone"
     t.index ["country_code"], name: "index_organizations_on_country_code"
     t.index ["name", "country_code"], name: "index_organizations_on_name_and_country_code", unique: true
     t.index ["slug"], name: "index_organizations_on_slug", unique: true

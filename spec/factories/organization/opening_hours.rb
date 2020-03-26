@@ -6,6 +6,5 @@ FactoryBot.define do
     day { (1..7).to_a.sample }
     open { Time.current.beginning_of_day }
     close { Time.current.end_of_day }
-    timezone { ActiveSupport::TimeZone.all.map(&:name).sample }
   end
 end
