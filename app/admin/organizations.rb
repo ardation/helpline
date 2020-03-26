@@ -2,7 +2,7 @@
 
 ActiveAdmin.register Organization do
   permit_params :name, :country_code, :region, :category_list, :human_support_type_list, :issue_list,
-                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes
+                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone
 
   filter :name
   filter :country_code,
@@ -53,6 +53,7 @@ ActiveAdmin.register Organization do
       row :categories
       row :human_support_types
       row :issues
+      row :timezone
       row :notes
     end
   end
@@ -69,6 +70,7 @@ ActiveAdmin.register Organization do
                 label: 'Country',
                 input_html: { 'data-width' => '100%' }
           input :region
+          input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
           input :category_list,
                 as: :tags,
                 collection: Organization.category_counts.order(:name).pluck(:name),
