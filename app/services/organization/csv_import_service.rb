@@ -4,6 +4,7 @@ require 'csv'
 
 class Organization
   class CsvImportService
+    class ValidationError < StandardError; end
     attr_reader :file
 
     def self.import(file)
@@ -15,17 +16,25 @@ class Organization
     end
 
     def import
-      CSV.parse(contents, headers: true) do |row|
-        attributes = attributes_from_row(row)
-        organization = Organization.find_or_initialize_by(
-          name: attributes['name'], country_code: attributes['country_code']
-        )
-        organization.attributes = attributes
-        organization.save
+      errors = []
+      CSV.parse(contents, headers: true).each.with_index(1) do |row, index|
+        organization = build_organization_from_row(row)
+        errors << "Row #{index}: #{organization.errors.full_messages.join(', ')}" unless organization.save
       end
+      raise ValidationError, "CSV imported with some errors! \n#{errors.join("\n")}" if errors.present?
     end
 
     protected
+
+    def build_organization_from_row(row)
+      attributes = attributes_from_row(row)
+      organization = Organization.find_or_initialize_by(
+        name: attributes['name'], country_code: attributes['country_code']
+      )
+      organization.attributes = attributes
+
+      organization
+    end
 
     def contents
       CsvEncodingService.normalized_utf8(file.read)
