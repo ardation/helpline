@@ -8,9 +8,14 @@ RSpec.describe Organization::OpeningHour, type: :model do
   it { is_expected.to belong_to(:organization) }
   it { is_expected.to validate_presence_of(:close) }
   it { is_expected.to validate_presence_of(:open) }
-  it { is_expected.to validate_uniqueness_of(:day).scoped_to(:organization_id) }
-  it { is_expected.to allow_values(1, 2, 3, 4, 5, 6, 7).for(:day) }
-  it { is_expected.not_to allow_values(0, 8).for(:day) }
+  it { is_expected.to validate_presence_of(:day) }
+  it { is_expected.to validate_uniqueness_of(:day).scoped_to(:organization_id).ignoring_case_sensitivity }
+
+  it do
+    expect(opening_hour).to define_enum_for(:day).with_values(
+      monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7
+    )
+  end
 
   describe '#open_before_close' do
     before do

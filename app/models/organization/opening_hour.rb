@@ -4,8 +4,9 @@ class Organization
   class OpeningHour < ApplicationRecord
     belongs_to :organization
     validates :close, :open, presence: true
-    validates :day, inclusion: { in: 1..7 }, uniqueness: { scope: :organization_id }
+    validates :day, uniqueness: { scope: :organization_id }, presence: true
     validate :open_before_close
+    enum day: { monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7 }
 
     protected
 
