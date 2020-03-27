@@ -20,7 +20,8 @@ ActiveAdmin.register Organization do
 
   collection_action :import_csv, method: :post do
     Organization::CsvImportService.import(params[:csv][:file])
-    redirect_to action: :index, notice: 'CSV imported successfully!'
+    flash[:notice] = 'CSV imported successfully!'
+    redirect_to action: :index
   rescue Organization::CsvImportService::ValidationError => e
     flash[:alert] = simple_format(e.message)
     redirect_to action: :index
