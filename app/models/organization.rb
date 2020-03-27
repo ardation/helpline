@@ -10,5 +10,5 @@ class Organization < ApplicationRecord
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :chat_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }, presence: true
-  accepts_nested_attributes_for :opening_hours
+  accepts_nested_attributes_for :opening_hours, allow_destroy: true
 end

@@ -17,5 +17,5 @@ RSpec.describe Organization, type: :model do
   it { is_expected.not_to allow_values('foo', 'buz').for(:chat_url) }
   it { is_expected.to allow_values(*ActiveSupport::TimeZone.all.map(&:name)).for(:timezone) }
   it { is_expected.not_to allow_values('test', 'place').for(:timezone) }
-  it { is_expected.to accept_nested_attributes_for(:opening_hours) }
+  it { is_expected.to accept_nested_attributes_for(:opening_hours).allow_destroy(true) }
 end

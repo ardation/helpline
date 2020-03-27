@@ -2,7 +2,8 @@
 
 ActiveAdmin.register Organization do
   permit_params :name, :country_code, :region, :category_list, :human_support_type_list, :issue_list,
-                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone
+                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone,
+                opening_hours_attributes: %i[id day open close _destroy]
 
   filter :name
   filter :country_code,
@@ -10,7 +11,7 @@ ActiveAdmin.register Organization do
          collection: ISO3166::Country.all.map { |c| [c.name, c.alpha2] }.sort { |a, b| a[0] <=> b[0] },
          label: 'Country'
 
-  action_item only: :index do
+  action_item :import_csv, only: :index do
     link_to 'Import from CSV', action: 'upload_csv'
   end
 
@@ -43,6 +44,7 @@ ActiveAdmin.register Organization do
   show do
     attributes_table do
       row :name
+      row :timezone
       row :country do |organization|
         ISO3166::Country.all.find { |c| c.alpha2 == organization.country_code }&.name
       end
@@ -57,24 +59,31 @@ ActiveAdmin.register Organization do
       row :categories
       row :human_support_types
       row :issues
-      row :timezone
       row :notes
     end
   end
 
-  form do |_f|
+  sidebar :opening_hours, only: :show do
+    table_for organization.opening_hours do
+      column(:day) { |opening_hour| opening_hour.day.titleize }
+      column(:open) { |opening_hour| opening_hour.open.strftime('%H:%M %p') }
+      column(:close) { |opening_hour| opening_hour.close.strftime('%H:%M %p') }
+    end
+  end
+
+  form do |f|
     semantic_errors
     columns do
       column do
         inputs 'Primary Details' do
           input :name
+          input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
           input :country_code,
                 as: :select,
                 collection: ISO3166::Country.all.map { |c| [c.name, c.alpha2] },
                 label: 'Country',
                 input_html: { 'data-width' => '100%' }
           input :region
-          input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
           input :category_list,
                 as: :tags,
                 collection: Organization.category_counts.order(:name).pluck(:name),
@@ -105,7 +114,20 @@ ActiveAdmin.register Organization do
         end
       end
     end
+    f.has_many :opening_hours, allow_destroy: true do |t|
+      t.input :day, input_html: { 'data-width' => '100%' }
+      t.input :open
+      t.input :close
+    end
     actions
+  end
+
+  after_build do |organization|
+    if action_name == 'new'
+      Organization::OpeningHour.days.each do |day, _index|
+        organization.opening_hours.build(day: day, open: Time.current.beginning_of_day, close: Time.current.end_of_day)
+      end
+    end
   end
 
   controller do

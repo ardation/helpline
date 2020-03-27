@@ -70,3 +70,33 @@ $am-theme-accent-fallback: #ff7547;
 .input.text textarea {
   height: auto;
 }
+.time_select .fragments-group {
+  .fragment {
+    padding-bottom: 10px;
+    label {
+      font-size: 80%;
+      position: relative !important;
+    }
+  }
+}
+.has_many_container.opening_hours {
+  margin: 10px 20px;
+  .has_many_fields {
+    > ol {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto;
+    }
+  }
+  .time_select .fragments-group {
+    margin: 0;
+    border: 0;
+    .fragment {
+      width: 100px;
+      padding-bottom: 0;
+      label {
+        display: none;
+      }
+    }
+  }
+}
+
