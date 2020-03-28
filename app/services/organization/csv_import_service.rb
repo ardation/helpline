@@ -19,6 +19,8 @@ class Organization
       errors = []
       CSV.parse(contents, headers: true).each.with_index(1) do |row, index|
         organization = build_organization_from_row(row)
+        update_opening_hours_from_row(row, organization)
+
         errors << "Row #{index}: #{organization.errors.full_messages.join(', ')}" unless organization.save
       end
       raise ValidationError, "CSV imported with some errors! \n#{errors.join("\n")}" if errors.present?
@@ -45,6 +47,19 @@ class Organization
         :name, :country_code, :region, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
         :notes, :timezone, :human_support_type_list, :issue_list, :category_list
       )
+    end
+
+    def update_opening_hours_from_row(row, organization)
+      attributes = row.to_hash
+      Organization::OpeningHour.days.each do |day, _index|
+        next unless attributes["#{day}_open"] && attributes["#{day}_close"]
+
+        organization.opening_hours.build(
+          day: day,
+          open: DateTime.parse(attributes["#{day}_open"]),
+          close: DateTime.parse(attributes["#{day}_close"])
+        )
+      end
     end
   end
 end

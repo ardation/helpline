@@ -7,7 +7,8 @@ RSpec.describe Organization::CsvImportService, type: :service do
 
   describe '.import' do
     let(:organization) { Organization.first }
-    let(:attributes) do
+    let(:opening_hour) { organization.opening_hours.first }
+    let(:organization_attributes) do
       {
         'name' => 'Youthline',
         'country_code' => 'NZ',
@@ -23,14 +24,21 @@ RSpec.describe Organization::CsvImportService, type: :service do
         'timezone' => 'Auckland'
       }
     end
+    let(:opening_hour_attributes) do
+      {
+        'day' => 'monday',
+        'open' => DateTime.new(2000, 1, 1, 11, 31),
+        'close' => DateTime.new(2000, 1, 1, 20, 20)
+      }
+    end
 
     it 'creates organization' do
       expect { described_class.import(csv) }.to change(Organization, :count).by(1)
     end
 
-    it 'has the correct attributes' do
+    it 'has the correct organization attributes' do
       described_class.import(csv)
-      expect(organization.attributes).to include(attributes)
+      expect(organization.attributes).to include(organization_attributes)
     end
 
     it 'has the correct human_support_type_list' do
@@ -48,6 +56,11 @@ RSpec.describe Organization::CsvImportService, type: :service do
       expect(organization.category_list).to match_array ['All issues', 'For youth']
     end
 
+    it 'has the correct opening_hour attributes' do
+      described_class.import(csv)
+      expect(opening_hour.attributes).to include(opening_hour_attributes)
+    end
+
     context 'when organization already exists' do
       let!(:organization) { create(:organization, name: 'Youthline', country_code: 'NZ') }
 
@@ -57,7 +70,7 @@ RSpec.describe Organization::CsvImportService, type: :service do
 
       it 'has the correct attributes' do
         described_class.import(csv)
-        expect(organization.reload.attributes).to include(attributes)
+        expect(organization.reload.attributes).to include(organization_attributes)
       end
     end
 
