@@ -13,7 +13,7 @@ RSpec.describe Queries::CountryQuery, type: :request do
       {
         'id' => country.id,
         'name' => country.name,
-        'emergencyNumber' => country.emergency_number,
+        'emergencyNumber' => country.emergency_number
       }
     end
 
