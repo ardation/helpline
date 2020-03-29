@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :organization do
     name { Faker::Name.name }
-    country_code { ISO3166::Country.all.map(&:alpha2).sample }
+    country
     timezone { ActiveSupport::TimeZone.all.map(&:name).sample }
     trait :complete do
       category_list { Faker::Lorem.words(number: 4) }

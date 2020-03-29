@@ -30,8 +30,9 @@ class Organization
 
     def build_organization_from_row(row)
       attributes = attributes_from_row(row)
+      country = Country.find_or_create_by(code: row['country_code']&.upcase)
       organization = Organization.find_or_initialize_by(
-        name: attributes['name'], country_code: attributes['country_code']
+        name: attributes['name'], country: country.id.nil? ? nil : country
       )
       organization.attributes = attributes
 
@@ -44,7 +45,7 @@ class Organization
 
     def attributes_from_row(row)
       ActionController::Parameters.new(organization: row.to_hash).require(:organization).permit(
-        :name, :country_code, :region, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
+        :name, :region, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
         :notes, :timezone, :human_support_type_list, :issue_list, :category_list
       )
     end

@@ -15,14 +15,17 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'id' => organization.id,
         'name' => organization.name,
         'slug' => organization.slug,
-        'countryCode' => organization.country_code,
+        'country' => {
+          'code' => organization.country.code
+        },
         'url' => organization.url,
         'chatUrl' => organization.chat_url,
+        'region' => organization.region,
         'phoneWord' => organization.phone_word,
         'phoneNumber' => organization.phone_number,
         'smsWord' => organization.sms_word,
         'smsNumber' => organization.sms_number,
-        'region' => organization.region,
+        'timezone' => organization.timezone,
         'categories' =>
           match_array(organization.categories.map { |t| { 'name' => t.name } }),
         'humanSupportTypes' =>
@@ -51,7 +54,6 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           id
           name
           slug
-          countryCode
           url
           chatUrl
           region
@@ -60,6 +62,9 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           smsWord
           smsNumber
           timezone
+          country {
+            code
+          }
           categories {
             name
           }

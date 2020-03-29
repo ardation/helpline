@@ -11,7 +11,7 @@ RSpec.describe Organization::CsvImportService, type: :service do
     let(:organization_attributes) do
       {
         'name' => 'Youthline',
-        'country_code' => 'NZ',
+        'country_id' => Country.find_by(code: 'NZ').id,
         'region' => 'Auckland',
         'phone_word' => '0800 YOUTHLINE',
         'phone_number' => '0800 376 633',
@@ -62,7 +62,7 @@ RSpec.describe Organization::CsvImportService, type: :service do
     end
 
     context 'when organization already exists' do
-      let!(:organization) { create(:organization, name: 'Youthline', country_code: 'NZ') }
+      let!(:organization) { create(:organization, name: 'Youthline', country: create(:country, code: 'NZ')) }
 
       it 'does not create organization' do
         expect { described_class.import(csv) }.not_to change(Organization, :count)
@@ -80,7 +80,7 @@ RSpec.describe Organization::CsvImportService, type: :service do
       it 'raises error' do
         expect { described_class.import(csv) }.to raise_error(
           Organization::CsvImportService::ValidationError,
-          /Row 1: Country code can't be blank, Country code is not included in the list/
+          /Row 1: Country must exist, Name can't be blank/
         )
       end
     end

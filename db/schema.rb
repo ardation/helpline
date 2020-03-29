@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_044744) do
+ActiveRecord::Schema.define(version: 2020_03_29_022337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "countries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "emergency_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "slug", null: false
@@ -41,7 +49,6 @@ ActiveRecord::Schema.define(version: 2020_03_26_044744) do
 
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "country_code", null: false
     t.string "region"
     t.string "phone_word"
     t.string "phone_number"
@@ -54,8 +61,9 @@ ActiveRecord::Schema.define(version: 2020_03_26_044744) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "notes"
     t.string "timezone"
-    t.index ["country_code"], name: "index_organizations_on_country_code"
-    t.index ["name", "country_code"], name: "index_organizations_on_name_and_country_code", unique: true
+    t.uuid "country_id", null: false
+    t.index ["country_id"], name: "index_organizations_on_country_id"
+    t.index ["name", "country_id"], name: "index_organizations_on_name_and_country_id", unique: true
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end
 
@@ -104,5 +112,6 @@ ActiveRecord::Schema.define(version: 2020_03_26_044744) do
   end
 
   add_foreign_key "organization_opening_hours", "organizations"
+  add_foreign_key "organizations", "countries"
   add_foreign_key "taggings", "tags"
 end

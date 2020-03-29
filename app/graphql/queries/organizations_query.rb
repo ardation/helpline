@@ -13,7 +13,7 @@ module Queries
 
     def resolve(country_code: nil, categories: [], human_support_types: [], issues: [])
       organizations = Organization.all
-      organizations = organizations.where(country_code: country_code) if country_code
+      organizations = organizations.joins(:country).where(countries: { code: country_code }) if country_code
       organizations = organizations.tagged_with(categories, on: :categories) unless categories.empty?
       unless human_support_types.empty?
         organizations = organizations.tagged_with(human_support_types, on: :human_support_types)

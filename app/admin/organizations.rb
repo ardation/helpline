@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Organization do
-  permit_params :name, :country_code, :region, :category_list, :human_support_type_list, :issue_list,
+  permit_params :name, :country_id, :region, :category_list, :human_support_type_list, :issue_list,
                 :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone,
                 opening_hours_attributes: %i[id day open close _destroy]
 
   filter :name
-  filter :country_code,
-         as: :select,
-         collection: ISO3166::Country.all.map { |c| [c.name, c.alpha2] }.sort { |a, b| a[0] <=> b[0] },
-         label: 'Country'
+  filter :country
 
   action_item :import_csv, only: :index do
     link_to 'Import from CSV', action: 'upload_csv'
@@ -34,9 +31,7 @@ ActiveAdmin.register Organization do
       link_to organization.slug.truncate(20), organization_path(organization)
     end
     column :name
-    column :country, sortable: :country_code do |organization|
-      ISO3166::Country.all.find { |c| c.alpha2 == organization.country_code }&.name
-    end
+    column :country
     column :region
     actions
   end
@@ -45,9 +40,7 @@ ActiveAdmin.register Organization do
     attributes_table do
       row :name
       row :timezone
-      row :country do |organization|
-        ISO3166::Country.all.find { |c| c.alpha2 == organization.country_code }&.name
-      end
+      row :country
       row :phone_word
       row :phone_number
       row :sms_word
@@ -78,11 +71,7 @@ ActiveAdmin.register Organization do
         inputs 'Primary Details' do
           input :name
           input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
-          input :country_code,
-                as: :select,
-                collection: ISO3166::Country.all.map { |c| [c.name, c.alpha2] },
-                label: 'Country',
-                input_html: { 'data-width' => '100%' }
+          input :country, input_html: { 'data-width' => '100%' }
           input :region
           input :category_list,
                 as: :tags,

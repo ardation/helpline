@@ -8,7 +8,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
   let!(:organization_0) do
     create(
       :organization,
-      country_code: 'AU',
+      country: create(:country, code: 'AU'),
       category_list: ['category_0'],
       human_support_type_list: ['human_support_type_0'],
       issue_list: ['issue_0']
@@ -17,7 +17,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
   let!(:organization_1) do
     create(
       :organization,
-      country_code: 'NZ',
+      country: create(:country, code: 'NZ'),
       category_list: ['category_1'],
       human_support_type_list: ['human_support_type_1'],
       issue_list: ['issue_1']
