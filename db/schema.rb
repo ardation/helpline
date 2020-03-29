@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_29_022337) do
+ActiveRecord::Schema.define(version: 2020_03_13_205241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,7 +48,9 @@ ActiveRecord::Schema.define(version: 2020_03_29_022337) do
   end
 
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "country_id", null: false
     t.string "name", null: false
+    t.string "country_code", null: false
     t.string "region"
     t.string "phone_word"
     t.string "phone_number"
@@ -57,11 +59,10 @@ ActiveRecord::Schema.define(version: 2020_03_29_022337) do
     t.string "chat_url"
     t.string "url"
     t.string "slug"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.text "notes"
     t.string "timezone"
-    t.uuid "country_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["country_id"], name: "index_organizations_on_country_id"
     t.index ["name", "country_id"], name: "index_organizations_on_name_and_country_id", unique: true
     t.index ["slug"], name: "index_organizations_on_slug", unique: true

@@ -7,9 +7,10 @@ class CreateOrganizationOpeningHours < ActiveRecord::Migration[6.0]
       t.integer :day, null: false
       t.time :open, null: false
       t.time :close, null: false
-      t.string :timezone, null: false
 
       t.timestamps
     end
+
+    add_index :organization_opening_hours, %i[organization_id day], unique: true
   end
 end
