@@ -30,8 +30,8 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           match_array(organization.categories.map { |t| { 'name' => t.name } }),
         'humanSupportTypes' =>
           match_array(organization.human_support_types.map { |t| { 'name' => t.name } }),
-        'issues' =>
-          match_array(organization.issues.map { |t| { 'name' => t.name } }),
+        'topics' =>
+          match_array(organization.topics.map { |t| { 'name' => t.name } }),
         'openingHours' => [{
           'id' => opening_hour.id,
           'open' => opening_hour.open.iso8601,
@@ -71,7 +71,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           humanSupportTypes {
             name
           }
-          issues {
+          topics {
             name
           }
           openingHours {

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This migration comes from acts_as_taggable_on_engine (originally 5)
-# This migration is added to circumvent issue #623 and have special characters
+# This migration is added to circumvent topic #623 and have special characters
 # work properly
 if ActiveRecord.gem_version >= Gem::Version.new('5.0')
   class ChangeCollationForTagNames < ActiveRecord::Migration[4.2]; end

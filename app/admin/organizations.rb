@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Organization do
-  permit_params :name, :country_id, :region, :category_list, :human_support_type_list, :issue_list,
+  permit_params :name, :country_id, :region, :category_list, :human_support_type_list, :topic_list,
                 :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone,
                 opening_hours_attributes: %i[id day open close _destroy]
 
@@ -51,7 +51,7 @@ ActiveAdmin.register Organization do
       end
       row :categories
       row :human_support_types
-      row :issues
+      row :topics
       row :notes
     end
   end
@@ -83,11 +83,11 @@ ActiveAdmin.register Organization do
                 collection: Organization.human_support_type_counts.order(:name).pluck(:name),
                 input_html: { 'data-width' => '100%' },
                 label: 'Human Support Types'
-          input :issue_list,
+          input :topic_list,
                 as: :tags,
-                collection: Organization.issue_counts.order(:name).pluck(:name),
+                collection: Organization.topic_counts.order(:name).pluck(:name),
                 input_html: { 'data-width' => '100%' },
-                label: 'Issues'
+                label: 'topics'
           input :notes,
                 input_html: { rows: 5 }
         end

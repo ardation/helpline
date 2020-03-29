@@ -6,7 +6,7 @@ module Types
     field :country, resolver: Queries::CountryQuery
     field :countries, resolver: Queries::CountriesQuery
     field :human_support_types, resolver: Queries::HumanSupportTypesQuery
-    field :issues, resolver: Queries::IssuesQuery
+    field :topics, resolver: Queries::TopicsQuery
     field :organization, resolver: Queries::OrganizationQuery
     field :organizations, resolver: Queries::OrganizationsQuery
   end

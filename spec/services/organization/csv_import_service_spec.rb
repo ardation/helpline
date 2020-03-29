@@ -46,14 +46,14 @@ RSpec.describe Organization::CsvImportService, type: :service do
       expect(organization.human_support_type_list).to match_array ['Volunteers', 'Paid Staff']
     end
 
-    it 'has the correct issue_list' do
+    it 'has the correct topic_list' do
       described_class.import(csv)
-      expect(organization.issue_list).to match_array %w[Anxiety Bullying]
+      expect(organization.topic_list).to match_array %w[Anxiety Bullying]
     end
 
     it 'has the correct category_list' do
       described_class.import(csv)
-      expect(organization.category_list).to match_array ['All issues', 'For youth']
+      expect(organization.category_list).to match_array ['All topics', 'For youth']
     end
 
     it 'has the correct opening_hour attributes' do

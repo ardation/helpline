@@ -5,7 +5,6 @@ class CreateOrganizations < ActiveRecord::Migration[6.0]
     create_table :organizations, id: :uuid do |t|
       t.belongs_to :country, null: false, foreign_key: { cascade: true }, type: :uuid, index: true
       t.string :name, null: false
-      t.string :country_code, null: false
       t.string :region
       t.string :phone_word
       t.string :phone_number

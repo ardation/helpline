@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Queries
-  class IssuesQuery < BaseQuery
-    description 'Find all issues'
+  class TopicsQuery < BaseQuery
+    description 'Find all topics'
 
     type [Types::TagType], null: false
 
     def resolve
-      Organization.issue_counts.order(:name)
+      Organization.topic_counts.order(:name)
     end
   end
 end

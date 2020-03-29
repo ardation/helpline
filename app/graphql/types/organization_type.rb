@@ -10,7 +10,7 @@ module Types
     field :categories, [Types::TagType], null: false
     field :chat_url, String, null: true
     field :human_support_types, [Types::TagType], null: false
-    field :issues, [Types::TagType], null: false
+    field :topics, [Types::TagType], null: false
     field :phone_number, String, null: true
     field :phone_word, String, null: true
     field :region, String, null: true
@@ -28,8 +28,8 @@ module Types
       Loaders::AssociationLoader.for(::Organization, :human_support_types).load(object)
     end
 
-    def issues
-      Loaders::AssociationLoader.for(::Organization, :issues).load(object)
+    def topics
+      Loaders::AssociationLoader.for(::Organization, :topics).load(object)
     end
 
     def opening_hours

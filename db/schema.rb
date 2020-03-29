@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 2020_03_13_205241) do
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "country_id", null: false
     t.string "name", null: false
-    t.string "country_code", null: false
     t.string "region"
     t.string "phone_word"
     t.string "phone_number"

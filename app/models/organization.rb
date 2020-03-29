@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
-  acts_as_taggable_on :human_support_types, :issues, :categories
+  acts_as_taggable_on :human_support_types, :topics, :categories
   extend FriendlyId
   friendly_id :name, use: :slugged
   belongs_to :country
