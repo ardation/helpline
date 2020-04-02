@@ -32,14 +32,14 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
