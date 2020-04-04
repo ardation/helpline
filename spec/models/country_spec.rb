@@ -6,8 +6,10 @@ RSpec.describe Country, type: :model do
   subject(:country) { build(:country) }
 
   it { is_expected.to have_many(:organizations).dependent(:destroy) }
+  it { is_expected.to have_many(:subdivisions).dependent(:destroy) }
   it { is_expected.to validate_presence_of(:code) }
   it { is_expected.to validate_inclusion_of(:code).in_array(ISO3166::Country.all.map(&:alpha2)) }
+  it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
 
   describe '#code=' do
     it 'set code to upcase version' do
@@ -21,6 +23,14 @@ RSpec.describe Country, type: :model do
 
     it 'returns code as country name' do
       expect(country.name).to eq 'United States of America'
+    end
+  end
+
+  describe '#iso_3166_country' do
+    subject(:country) { build(:country, code: 'US') }
+
+    it 'returns ISO3166::Country' do
+      expect(country.iso_3166_country).to eq ISO3166::Country.new('US')
     end
   end
 end

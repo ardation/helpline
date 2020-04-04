@@ -6,6 +6,7 @@ FactoryBot.define do
     country
     timezone { ActiveSupport::TimeZone.all.map(&:name).sample }
     trait :complete do
+      association :country, factory: :country, code: 'US'
       category_list { Faker::Lorem.words(number: 4) }
       chat_url { Faker::Internet.url }
       human_support_type_list { Faker::Lorem.words(number: 4) }
@@ -14,8 +15,13 @@ FactoryBot.define do
       phone_word { Faker::PhoneNumber.phone_number }
       sms_number { Faker::PhoneNumber.phone_number }
       sms_word { Faker::Lorem.word }
-      region { Faker::Address.state }
       url { Faker::Internet.url }
+      after(:build) do |organization|
+        if organization.subdivisions.empty?
+          organization.subdivisions.build(code: 'AL', country: organization.country)
+          organization.subdivisions.build(code: 'FL', country: organization.country)
+        end
+      end
     end
   end
 end

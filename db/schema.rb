@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_205241) do
+ActiveRecord::Schema.define(version: 2020_04_04_013216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -19,10 +19,19 @@ ActiveRecord::Schema.define(version: 2020_03_13_205241) do
 
   create_table "countries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
-    t.string "name"
     t.string "emergency_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_countries_on_code", unique: true
+  end
+
+  create_table "country_subdivisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "country_id", null: false
+    t.string "code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["code", "country_id"], name: "index_country_subdivisions_on_code_and_country_id", unique: true
+    t.index ["country_id"], name: "index_country_subdivisions_on_country_id"
   end
 
   create_table "friendly_id_slugs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -47,10 +56,19 @@ ActiveRecord::Schema.define(version: 2020_03_13_205241) do
     t.index ["organization_id"], name: "index_organization_opening_hours_on_organization_id"
   end
 
+  create_table "organization_subdivision_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.uuid "subdivision_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id", "subdivision_id"], name: "organization_subdivision_uniq_idx", unique: true
+    t.index ["organization_id"], name: "index_organization_subdivision_connections_on_organization_id"
+    t.index ["subdivision_id"], name: "index_organization_subdivision_connections_on_subdivision_id"
+  end
+
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "country_id", null: false
     t.string "name", null: false
-    t.string "region"
     t.string "phone_word"
     t.string "phone_number"
     t.string "sms_word"
@@ -62,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_205241) do
     t.string "timezone"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "always_open", default: false
     t.index ["country_id"], name: "index_organizations_on_country_id"
     t.index ["name", "country_id"], name: "index_organizations_on_name_and_country_id", unique: true
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
@@ -111,7 +130,10 @@ ActiveRecord::Schema.define(version: 2020_03_13_205241) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "country_subdivisions", "countries"
   add_foreign_key "organization_opening_hours", "organizations"
+  add_foreign_key "organization_subdivision_connections", "country_subdivisions", column: "subdivision_id"
+  add_foreign_key "organization_subdivision_connections", "organizations"
   add_foreign_key "organizations", "countries"
   add_foreign_key "taggings", "tags"
 end

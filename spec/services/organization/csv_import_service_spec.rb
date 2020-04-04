@@ -12,7 +12,6 @@ RSpec.describe Organization::CsvImportService, type: :service do
       {
         'name' => 'Youthline',
         'country_id' => Country.find_by(code: 'NZ').id,
-        'region' => 'Auckland',
         'phone_word' => '0800 YOUTHLINE',
         'phone_number' => '0800 376 633',
         'sms_word' => 'WORD',
@@ -54,6 +53,13 @@ RSpec.describe Organization::CsvImportService, type: :service do
     it 'has the correct category_list' do
       described_class.import(csv)
       expect(organization.category_list).to match_array ['All topics', 'For youth']
+    end
+
+    it 'has the correct subdivisions' do
+      described_class.import(csv)
+      expect(organization.subdivisions).to match_array [
+        Country::Subdivision.find_by(code: 'AUK'), Country::Subdivision.find_by(code: 'BOP')
+      ]
     end
 
     it 'has the correct opening_hour attributes' do
