@@ -9,7 +9,6 @@ class Country
               presence: true,
               inclusion: { in: :subdivision_codes },
               uniqueness: { scope: :country_id }
-    delegate :name, to: :iso_3166_subdivision
 
     def code=(code)
       super(code&.upcase)
@@ -17,6 +16,10 @@ class Country
 
     def iso_3166_subdivision
       ISO3166::Country.new(country.code).subdivisions[code]
+    end
+
+    def name
+      iso_3166_subdivision.name || ''
     end
 
     private
