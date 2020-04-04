@@ -25,6 +25,9 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'smsWord' => organization.sms_word,
         'smsNumber' => organization.sms_number,
         'timezone' => organization.timezone,
+        'alwaysOpen' => organization.always_open,
+        'subdivisions' =>
+          match_array(organization.subdivisions.map { |t| { 'code' => t.code } }),
         'categories' =>
           match_array(organization.categories.map { |t| { 'name' => t.name } }),
         'humanSupportTypes' =>
@@ -60,7 +63,11 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           smsWord
           smsNumber
           timezone
+          alwaysOpen
           country {
+            code
+          }
+          subdivisions {
             code
           }
           categories {

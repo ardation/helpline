@@ -18,6 +18,8 @@ module Types
     field :timezone, String, null: false
     field :url, String, null: true
     field :opening_hours, [Types::Organization::OpeningHourType], null: false
+    field :subdivisions, [Types::Country::SubdivisionType], null: false
+    field :always_open, Boolean, null: false
 
     def categories
       Loaders::AssociationLoader.for(::Organization, :categories).load(object)
@@ -33,6 +35,10 @@ module Types
 
     def opening_hours
       Loaders::AssociationLoader.for(::Organization, :opening_hours).load(object)
+    end
+
+    def subdivisions
+      Loaders::AssociationLoader.for(::Organization, :subdivisions).load(object)
     end
   end
 end

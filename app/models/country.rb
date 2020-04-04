@@ -2,6 +2,7 @@
 
 class Country < ApplicationRecord
   has_many :organizations, dependent: :destroy
+  has_many :subdivisions, dependent: :destroy
   validates :code, presence: true, inclusion: { in: ISO3166::Country.all.map(&:alpha2) }
   delegate :name, to: :iso_3166_country
 

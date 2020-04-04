@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Queries::CountryQuery, type: :request do
   before { host! 'api.example.com' }
 
-  let(:country) { create(:country) }
+  let(:country) { create(:country, :complete) }
 
   describe '.resolve' do
     let(:data) { JSON.parse(response.body)['data']['country'] }
@@ -13,7 +13,14 @@ RSpec.describe Queries::CountryQuery, type: :request do
       {
         'id' => country.id,
         'name' => country.name,
-        'emergencyNumber' => country.emergency_number
+        'emergencyNumber' => country.emergency_number,
+        'subdivisions' => match_array(country.subdivisions.map do |t|
+          {
+            'id' => t.id,
+            'code' => t.code,
+            'name' => t.name
+          }
+        end)
       }
     end
 
@@ -30,6 +37,11 @@ RSpec.describe Queries::CountryQuery, type: :request do
           id
           name
           emergencyNumber
+          subdivisions {
+            id
+            code
+            name
+          }
         }
       }
     GQL

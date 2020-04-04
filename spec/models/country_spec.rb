@@ -6,6 +6,7 @@ RSpec.describe Country, type: :model do
   subject(:country) { build(:country) }
 
   it { is_expected.to have_many(:organizations).dependent(:destroy) }
+  it { is_expected.to have_many(:subdivisions).dependent(:destroy) }
   it { is_expected.to validate_presence_of(:code) }
   it { is_expected.to validate_inclusion_of(:code).in_array(ISO3166::Country.all.map(&:alpha2)) }
 
