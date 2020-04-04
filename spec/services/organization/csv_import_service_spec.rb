@@ -12,7 +12,6 @@ RSpec.describe Organization::CsvImportService, type: :service do
       {
         'name' => 'Youthline',
         'country_id' => Country.find_by(code: 'NZ').id,
-        'region' => 'Auckland',
         'phone_word' => '0800 YOUTHLINE',
         'phone_number' => '0800 376 633',
         'sms_word' => 'WORD',

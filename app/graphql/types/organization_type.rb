@@ -13,7 +13,6 @@ module Types
     field :topics, [Types::TagType], null: false
     field :phone_number, String, null: true
     field :phone_word, String, null: true
-    field :region, String, null: true
     field :sms_number, String, null: true
     field :sms_word, String, null: true
     field :timezone, String, null: false

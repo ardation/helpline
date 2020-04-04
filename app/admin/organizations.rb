@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Organization do
-  permit_params :name, :country_id, :region, :category_list, :human_support_type_list, :topic_list,
+  permit_params :name, :country_id, :category_list, :human_support_type_list, :topic_list,
                 :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone,
                 opening_hours_attributes: %i[id day open close _destroy]
 
@@ -32,7 +32,6 @@ ActiveAdmin.register Organization do
     end
     column :name
     column :country
-    column :region
     actions
   end
 
@@ -72,7 +71,6 @@ ActiveAdmin.register Organization do
           input :name
           input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
           input :country, input_html: { 'data-width' => '100%' }
-          input :region
           input :category_list,
                 as: :tags,
                 collection: Organization.category_counts.order(:name).pluck(:name),

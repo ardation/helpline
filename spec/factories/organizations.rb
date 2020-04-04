@@ -14,7 +14,6 @@ FactoryBot.define do
       phone_word { Faker::PhoneNumber.phone_number }
       sms_number { Faker::PhoneNumber.phone_number }
       sms_word { Faker::Lorem.word }
-      region { Faker::Address.state }
       url { Faker::Internet.url }
     end
   end

@@ -7,6 +7,8 @@ RSpec.describe Organization, type: :model do
 
   it { is_expected.to belong_to(:country).required }
   it { is_expected.to have_many(:opening_hours).dependent(:destroy) }
+  it { is_expected.to have_many(:subdivision_connections).dependent(:destroy) }
+  it { is_expected.to have_many(:subdivisions).through(:subdivision_connections) }
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:timezone) }
   it { is_expected.to validate_uniqueness_of(:name).scoped_to(:country_id) }

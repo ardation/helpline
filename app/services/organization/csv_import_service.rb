@@ -45,7 +45,7 @@ class Organization
 
     def attributes_from_row(row)
       ActionController::Parameters.new(organization: row.to_hash).require(:organization).permit(
-        :name, :region, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
+        :name, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
         :notes, :timezone, :human_support_type_list, :topic_list, :category_list
       )
     end

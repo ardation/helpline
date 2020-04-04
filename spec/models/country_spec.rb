@@ -23,4 +23,12 @@ RSpec.describe Country, type: :model do
       expect(country.name).to eq 'United States of America'
     end
   end
+
+  describe '#iso_3166_country' do
+    subject(:country) { build(:country, code: 'US') }
+
+    it 'returns ISO3166::Country' do
+      expect(country.iso_3166_country).to eq ISO3166::Country.new('US')
+    end
+  end
 end

@@ -20,7 +20,6 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         },
         'url' => organization.url,
         'chatUrl' => organization.chat_url,
-        'region' => organization.region,
         'phoneWord' => organization.phone_word,
         'phoneNumber' => organization.phone_number,
         'smsWord' => organization.sms_word,
@@ -56,7 +55,6 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           slug
           url
           chatUrl
-          region
           phoneWord
           phoneNumber
           smsWord
