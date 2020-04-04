@@ -32,8 +32,8 @@ RSpec.describe Country::Subdivision, type: :model do
 
       let(:country) { build(:country, code: 'NZ') }
 
-      it 'returns empty string' do
-        expect(subdivision.name).to eq ''
+      it 'returns code' do
+        expect(subdivision.name).to eq 'CIT'
       end
     end
   end

@@ -19,7 +19,7 @@ class Country
     end
 
     def name
-      iso_3166_subdivision.name || ''
+      iso_3166_subdivision.name || code
     end
 
     private
