@@ -55,6 +55,13 @@ RSpec.describe Organization::CsvImportService, type: :service do
       expect(organization.category_list).to match_array ['All topics', 'For youth']
     end
 
+    it 'has the correct subdivisions' do
+      described_class.import(csv)
+      expect(organization.subdivisions).to match_array [
+        Country::Subdivision.find_by(code: 'AUK'), Country::Subdivision.find_by(code: 'BOP')
+      ]
+    end
+
     it 'has the correct opening_hour attributes' do
       described_class.import(csv)
       expect(opening_hour.attributes).to include(opening_hour_attributes)
