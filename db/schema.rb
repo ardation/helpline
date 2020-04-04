@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_000218) do
+ActiveRecord::Schema.define(version: 2020_04_04_013216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2020_04_04_000218) do
     t.string "emergency_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["code"], name: "index_countries_on_code", unique: true
   end
 
   create_table "country_subdivisions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

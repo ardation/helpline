@@ -9,6 +9,7 @@ RSpec.describe Country, type: :model do
   it { is_expected.to have_many(:subdivisions).dependent(:destroy) }
   it { is_expected.to validate_presence_of(:code) }
   it { is_expected.to validate_inclusion_of(:code).in_array(ISO3166::Country.all.map(&:alpha2)) }
+  it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
 
   describe '#code=' do
     it 'set code to upcase version' do

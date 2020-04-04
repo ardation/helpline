@@ -7,7 +7,8 @@ class Country
     has_many :organizations, through: :subdivision_connections
     validates :code,
               presence: true,
-              inclusion: { in: :subdivision_codes }
+              inclusion: { in: :subdivision_codes },
+              uniqueness: { scope: :country_id }
     delegate :name, to: :iso_3166_subdivision
 
     def code=(code)

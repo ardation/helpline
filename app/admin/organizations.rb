@@ -2,8 +2,8 @@
 
 ActiveAdmin.register Organization do
   permit_params :name, :country_id, :category_list, :human_support_type_list, :topic_list,
-                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone,
-                opening_hours_attributes: %i[id day open close _destroy]
+                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone, :always_open,
+                opening_hours_attributes: %i[id day open close _destroy], subdivision_ids: []
 
   filter :name
   filter :country
@@ -40,6 +40,7 @@ ActiveAdmin.register Organization do
       row :name
       row :timezone
       row :country
+      row :subdivisions
       row :phone_word
       row :phone_number
       row :sms_word
@@ -52,10 +53,11 @@ ActiveAdmin.register Organization do
       row :human_support_types
       row :topics
       row :notes
+      row :always_open
     end
   end
 
-  sidebar :opening_hours, only: :show do
+  sidebar :opening_hours, only: :show, if: -> { !organization.always_open } do
     table_for organization.opening_hours do
       column(:day) { |opening_hour| opening_hour.day.titleize }
       column(:open) { |opening_hour| opening_hour.open.strftime('%H:%M %p') }
@@ -71,6 +73,12 @@ ActiveAdmin.register Organization do
           input :name
           input :timezone, as: :time_zone, input_html: { 'data-width' => '100%' }
           input :country, input_html: { 'data-width' => '100%' }
+          input :subdivisions,
+                input_html: { 'data-width' => '100%' },
+                collection: option_groups_from_collection_for_select(
+                  Country.all, :subdivisions, :name, :id, :name, f.object.subdivision_ids
+                ),
+                hint: "Subdivisions must be in organization's country"
           input :category_list,
                 as: :tags,
                 collection: Organization.category_counts.order(:name).pluck(:name),
@@ -85,9 +93,10 @@ ActiveAdmin.register Organization do
                 as: :tags,
                 collection: Organization.topic_counts.order(:name).pluck(:name),
                 input_html: { 'data-width' => '100%' },
-                label: 'topics'
+                label: 'Topics'
           input :notes,
                 input_html: { rows: 5 }
+          input :always_open
         end
       end
       column do
