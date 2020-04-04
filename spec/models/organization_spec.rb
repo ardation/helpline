@@ -54,13 +54,13 @@ RSpec.describe Organization, type: :model do
 
     describe '.filter_by_country_code' do
       it 'returns organizations' do
-        expect(described_class.filter_by_country_code('NZ')).to match_array [organization_1, organization_2]
+        expect(described_class.filter_by_country_code('nz')).to match_array [organization_1, organization_2]
       end
     end
 
     describe '.filter_by_subdivison_codes' do
       it 'returns organizations' do
-        expect(described_class.filter_by_subdivision_codes(['AUK'])).to match_array [organization_2]
+        expect(described_class.filter_by_subdivision_codes(['auk'])).to match_array [organization_2]
       end
     end
 

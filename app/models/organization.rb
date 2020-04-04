@@ -14,8 +14,9 @@ class Organization < ApplicationRecord
   validates :chat_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }, presence: true
   accepts_nested_attributes_for :opening_hours, allow_destroy: true
-  scope :filter_by_country_code, ->(code) { joins(:country).where(countries: { code: code }) }
-  scope :filter_by_subdivision_codes, ->(codes) { joins(:subdivisions).where(country_subdivisions: { code: codes }) }
+  scope :filter_by_country_code, ->(code) { joins(:country).where(countries: { code: code.upcase }) }
+  scope :filter_by_subdivision_codes,
+        ->(codes) { joins(:subdivisions).where(country_subdivisions: { code: codes.map(&:upcase) }) }
   scope :filter_by_categories, ->(tags) { tagged_with(tags, on: :categories) }
   scope :filter_by_human_support_types, ->(tags) { tagged_with(tags, on: :human_support_types) }
   scope :filter_by_topics, ->(tags) { tagged_with(tags, on: :topics) }
