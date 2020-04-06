@@ -17,6 +17,7 @@ gem 'graphql'
 gem 'graphql-batch'
 gem 'pg'
 gem 'puma', '~> 4.1'
+gem 'rack-cors'
 gem 'rails', '~> 6.0.2'
 
 group :test do
