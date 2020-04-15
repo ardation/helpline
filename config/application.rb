@@ -40,6 +40,8 @@ module Helpline
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+    config.session_store :cache_store, key: '_helpline_session'
+    config.middleware.use config.session_store, config.session_options
   end
 end
