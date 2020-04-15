@@ -24,7 +24,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'phoneNumber' => organization.phone_number,
         'smsWord' => organization.sms_word,
         'smsNumber' => organization.sms_number,
-        'timezone' => organization.timezone,
+        'timezone' => ActiveSupport::TimeZone[organization.timezone].tzinfo.name,
         'alwaysOpen' => organization.always_open,
         'subdivisions' =>
           match_array(organization.subdivisions.map { |t| { 'code' => t.code } }),

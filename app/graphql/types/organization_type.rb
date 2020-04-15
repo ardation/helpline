@@ -40,5 +40,9 @@ module Types
     def subdivisions
       Loaders::AssociationLoader.for(::Organization, :subdivisions).load(object)
     end
+
+    def timezone
+      ActiveSupport::TimeZone[object.timezone].tzinfo.name
+    end
   end
 end
