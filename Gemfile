@@ -15,10 +15,12 @@ gem 'devise'
 gem 'friendly_id', '~> 5.2.4'
 gem 'graphql'
 gem 'graphql-batch'
+gem 'hiredis'
 gem 'pg'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
 gem 'rails', '~> 6.0.2'
+gem 'redis'
 gem 'rollbar'
 
 group :test do
