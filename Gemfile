@@ -19,6 +19,7 @@ gem 'pg'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
 gem 'rails', '~> 6.0.2'
+gem 'rollbar'
 
 group :test do
   gem 'database_cleaner-active_record'
