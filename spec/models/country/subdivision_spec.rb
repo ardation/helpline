@@ -52,7 +52,7 @@ RSpec.describe Country::Subdivision, type: :model do
     subject(:subdivision) { build(:country_subdivision, country: country) }
 
     let!(:country) { create(:country, code: 'US') }
-    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
 
     it 'calls ZEIT_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
@@ -65,7 +65,7 @@ RSpec.describe Country::Subdivision, type: :model do
     subject!(:subdivision) { create(:country_subdivision, country: country, code: 'AL') }
 
     let!(:country) { create(:country, code: 'US') }
-    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
 
     it 'calls ZEIT_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
@@ -77,7 +77,7 @@ RSpec.describe Country::Subdivision, type: :model do
   describe '#after_destroy' do
     subject!(:subdivision) { create(:country_subdivision) }
 
-    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
 
     it 'calls ZEIT_WEBHOOK_URL' do
       WebMock.reset_executed_requests!

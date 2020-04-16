@@ -2,7 +2,7 @@
 
 RSpec.configure do |config|
   config.before do
-    stub_request(:get, 'http://example.com/')
+    stub_request(:post, ENV['ZEIT_WEBHOOK_URL'])
       .with(
         headers: {
           'Accept' => '*/*',
