@@ -47,4 +47,42 @@ RSpec.describe Country::Subdivision, type: :model do
       expect(subdivision.iso_3166_subdivision).to eq ISO3166::Country.new('US').subdivisions['AL']
     end
   end
+
+  describe '#after_create' do
+    subject(:subdivision) { build(:country_subdivision, country: country) }
+
+    let!(:country) { create(:country, code: 'US') }
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      subdivision.save
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_save' do
+    subject!(:subdivision) { create(:country_subdivision, country: country, code: 'AL') }
+
+    let!(:country) { create(:country, code: 'US') }
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      subdivision.update(code: 'FL')
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_destroy' do
+    subject!(:subdivision) { create(:country_subdivision) }
+
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      subdivision.destroy
+      expect(stub).to have_been_requested.once
+    end
+  end
 end

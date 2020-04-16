@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  subject { build(:organization) }
+  subject(:organization) { build(:organization) }
 
   it { is_expected.to belong_to(:country).required }
   it { is_expected.to have_many(:opening_hours).dependent(:destroy) }
@@ -80,6 +80,43 @@ RSpec.describe Organization, type: :model do
       it 'returns organizations' do
         expect(described_class.filter_by_topics(['topic_0'])).to match_array [organization_0]
       end
+    end
+  end
+
+  describe '#after_create' do
+    subject(:organization) { build(:organization, country: country) }
+
+    let!(:country) { create(:country) }
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      organization.save
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_save' do
+    subject!(:organization) { create(:organization) }
+
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      organization.update(name: 'abc')
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_destroy' do
+    subject!(:organization) { create(:organization) }
+
+    let!(:stub) { stub_request(:get, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      organization.destroy
+      expect(stub).to have_been_requested.once
     end
   end
 end

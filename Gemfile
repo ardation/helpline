@@ -16,16 +16,19 @@ gem 'friendly_id', '~> 5.2.4'
 gem 'graphql'
 gem 'graphql-batch'
 gem 'hiredis'
+gem 'httparty'
 gem 'pg'
 gem 'puma', '~> 4.1'
 gem 'rack-cors'
 gem 'rails', '~> 6.0.2'
+gem 'rails-observers'
 gem 'redis'
 gem 'rollbar'
 
 group :test do
   gem 'database_cleaner-active_record'
   gem 'shoulda-matchers'
+  gem 'webmock'
 end
 
 group :development, :test do
