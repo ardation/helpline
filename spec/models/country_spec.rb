@@ -33,4 +33,40 @@ RSpec.describe Country, type: :model do
       expect(country.iso_3166_country).to eq ISO3166::Country.new('US')
     end
   end
+
+  describe '#after_create' do
+    subject(:country) { build(:country) }
+
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      country.save
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_save' do
+    subject!(:country) { create(:country) }
+
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      country.update(code: 'NZ')
+      expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#after_destroy' do
+    subject!(:country) { create(:country) }
+
+    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+
+    it 'calls ZEIT_WEBHOOK_URL' do
+      WebMock.reset_executed_requests!
+      country.destroy
+      expect(stub).to have_been_requested.once
+    end
+  end
 end
