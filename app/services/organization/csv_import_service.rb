@@ -30,22 +30,29 @@ class Organization
 
     def build_organization_from_row(row)
       attributes = attributes_from_row(row)
-      organization = build_organization(attributes['name'], row['country_code'], row['subdivision_codes'])
+      organization = build_organization(
+        attributes['name'], row['country_code'], row['subdivision_codes'], attributes['remote_id']
+      )
       organization.attributes = attributes
 
       organization
     end
 
-    def build_organization(name, country_code, subdivision_codes)
+    def build_organization(name, country_code, subdivision_codes, remote_id)
       country = Country.find_or_create_by(code: country_code&.upcase)
       subdivisions = country && subdivision_codes&.split(',')&.map do |subdivision_code|
         country.subdivisions.find_or_create_by(code: subdivision_code&.upcase)
       end
-      organization = Organization.find_or_initialize_by(
-        name: name, country: country.id.nil? ? nil : country
-      )
+      organization = find_organization(name, country, remote_id)
+      organization ||= Organization.new(name: name)
+      organization.country = country if country.persisted?
       organization.subdivisions = subdivisions if subdivisions.present?
       organization
+    end
+
+    def find_organization(name, country, remote_id)
+      organization = Organization.find_by(remote_id: remote_id) if remote_id.present?
+      organization || Organization.find_by(name: name, country: country.id.nil? ? nil : country)
     end
 
     def contents
@@ -55,7 +62,7 @@ class Organization
     def attributes_from_row(row)
       ActionController::Parameters.new(organization: row.to_hash).require(:organization).permit(
         :name, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url,
-        :notes, :timezone, :human_support_type_list, :topic_list, :category_list
+        :notes, :timezone, :human_support_type_list, :topic_list, :category_list, :remote_id
       )
     end
 

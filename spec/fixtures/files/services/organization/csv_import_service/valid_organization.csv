@@ -1,2 +1,2 @@
-country_code,subdivision_codes,name,phone_word,phone_number,sms_word,sms_number,chat_url,url,notes,timezone,human_support_type_list,topic_list,category_list,monday_open,monday_close
-NZ,"AUK,BOP",Youthline,0800 YOUTHLINE,0800 376 633,WORD,234,https://www.youthline.co.nz/web-chat-counselling.html,https://www.youthline.co.nz,no notes needed,Auckland,"Volunteers,Paid Staff","Anxiety,Bullying","All topics,For youth",11:31,20:20
+country_code,subdivision_codes,name,phone_word,phone_number,sms_word,sms_number,chat_url,url,notes,timezone,human_support_type_list,topic_list,category_list,monday_open,monday_close,remote_id
+NZ,"AUK,BOP",Youthline,0800 YOUTHLINE,0800 376 633,WORD,234,https://www.youthline.co.nz/web-chat-counselling.html,https://www.youthline.co.nz,no notes needed,Auckland,"Volunteers,Paid Staff","Anxiety,Bullying","All topics,For youth",11:31,20:20,TestRemoteId

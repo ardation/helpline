@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_013216) do
+ActiveRecord::Schema.define(version: 2020_04_17_043023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -81,8 +81,10 @@ ActiveRecord::Schema.define(version: 2020_04_04_013216) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "always_open", default: false
+    t.string "remote_id"
     t.index ["country_id"], name: "index_organizations_on_country_id"
     t.index ["name", "country_id"], name: "index_organizations_on_name_and_country_id", unique: true
+    t.index ["remote_id"], name: "index_organizations_on_remote_id", unique: true
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end
 

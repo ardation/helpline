@@ -12,6 +12,7 @@ RSpec.describe Organization, type: :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_presence_of(:timezone) }
   it { is_expected.to validate_uniqueness_of(:name).scoped_to(:country_id) }
+  it { is_expected.to validate_uniqueness_of(:remote_id).allow_nil }
   it { is_expected.to allow_values(nil, '', 'http://foo.com', 'http://bar.com').for(:url) }
   it { is_expected.not_to allow_values('foo', 'buz').for(:url) }
   it { is_expected.to allow_values(nil, '', 'http://foo.com', 'http://bar.com').for(:chat_url) }
@@ -117,6 +118,33 @@ RSpec.describe Organization, type: :model do
       WebMock.reset_executed_requests!
       organization.destroy
       expect(stub).to have_been_requested.once
+    end
+  end
+
+  describe '#should_generate_new_friendly_id?' do
+    subject!(:organization) { create(:organization) }
+
+    it 'returns false' do
+      expect(organization.should_generate_new_friendly_id?).to be(false)
+    end
+
+    context 'when name changed' do
+      it 'returns true' do
+        organization.name = 'test'
+        expect(organization.should_generate_new_friendly_id?).to be(true)
+      end
+    end
+  end
+
+  describe '#remote_id=' do
+    it 'sets empty string to nil' do
+      organization.remote_id = ''
+      expect(organization.remote_id).to be_nil
+    end
+
+    it 'sets remote_id' do
+      organization.remote_id = 'remote_id'
+      expect(organization.remote_id).to eq 'remote_id'
     end
   end
 end
