@@ -51,7 +51,7 @@ class Organization
     end
 
     def find_organization(name, country, remote_id)
-      organization = Organization.find_by(remote_id: remote_id) unless remote_id.nil?
+      organization = Organization.find_by(remote_id: remote_id) if remote_id.blank?
       organization || Organization.find_by(name: name, country: country.id.nil? ? nil : country)
     end
 
