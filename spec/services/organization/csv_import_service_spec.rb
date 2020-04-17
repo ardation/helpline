@@ -20,7 +20,8 @@ RSpec.describe Organization::CsvImportService, type: :service do
         'url' => 'https://www.youthline.co.nz',
         'slug' => 'youthline',
         'notes' => 'no notes needed',
-        'timezone' => 'Auckland'
+        'timezone' => 'Auckland',
+        'remote_id' => 'TestRemoteId'
       }
     end
     let(:opening_hour_attributes) do
@@ -67,8 +68,21 @@ RSpec.describe Organization::CsvImportService, type: :service do
       expect(opening_hour.attributes).to include(opening_hour_attributes)
     end
 
-    context 'when organization already exists' do
+    context 'when organization already exists with same name and country' do
       let!(:organization) { create(:organization, name: 'Youthline', country: create(:country, code: 'NZ')) }
+
+      it 'does not create organization' do
+        expect { described_class.import(csv) }.not_to change(Organization, :count)
+      end
+
+      it 'has the correct attributes' do
+        described_class.import(csv)
+        expect(organization.reload.attributes).to include(organization_attributes)
+      end
+    end
+
+    context 'when organization already exists with same remote_id' do
+      let!(:organization) { create(:organization, remote_id: 'TestRemoteId') }
 
       it 'does not create organization' do
         expect { described_class.import(csv) }.not_to change(Organization, :count)

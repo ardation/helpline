@@ -10,6 +10,7 @@ class Organization < ApplicationRecord
   has_many :subdivision_connections, dependent: :destroy
   has_many :subdivisions, through: :subdivision_connections, class_name: 'Country::Subdivision'
   validates :name, presence: true, uniqueness: { scope: :country_id }
+  validates :remote_id, uniqueness: true, allow_nil: true
   validates :url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :chat_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }, presence: true
@@ -20,4 +21,8 @@ class Organization < ApplicationRecord
   scope :filter_by_categories, ->(tags) { tagged_with(tags, on: :categories) }
   scope :filter_by_human_support_types, ->(tags) { tagged_with(tags, on: :human_support_types) }
   scope :filter_by_topics, ->(tags) { tagged_with(tags, on: :topics) }
+
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
 end

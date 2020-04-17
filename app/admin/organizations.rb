@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Organization do
-  permit_params :name, :country_id, :category_list, :human_support_type_list, :topic_list,
+  permit_params :name, :country_id, :category_list, :human_support_type_list, :topic_list, :remote_id,
                 :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone, :always_open,
                 opening_hours_attributes: %i[id day open close _destroy], subdivision_ids: []
 
@@ -32,6 +32,7 @@ ActiveAdmin.register Organization do
     end
     column :name
     column :country
+    column :remote_id
     actions
   end
 
@@ -54,6 +55,7 @@ ActiveAdmin.register Organization do
       row :topics
       row :notes
       row :always_open
+      row :remote_id
     end
   end
 
@@ -107,6 +109,7 @@ ActiveAdmin.register Organization do
           input :sms_number
           input :chat_url
           input :url
+          input :remote_id
         end
       end
     end
