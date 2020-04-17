@@ -25,4 +25,8 @@ class Organization < ApplicationRecord
   def should_generate_new_friendly_id?
     name_changed?
   end
+
+  def remote_id=(remote_id)
+    super remote_id.presence
+  end
 end

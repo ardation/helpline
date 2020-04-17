@@ -135,4 +135,16 @@ RSpec.describe Organization, type: :model do
       end
     end
   end
+
+  describe '#remote_id=' do
+    it 'sets empty string to nil' do
+      organization.remote_id = ''
+      expect(organization.remote_id).to be_nil
+    end
+
+    it 'sets remote_id' do
+      organization.remote_id = 'remote_id'
+      expect(organization.remote_id).to eq 'remote_id'
+    end
+  end
 end
