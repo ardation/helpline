@@ -32,7 +32,9 @@ ActiveAdmin.register Organization do
     end
     column :name
     column :country
-    column :remote_id
+    column 'Remote ID', sortable: :remote_id do |organization|
+      link_to organization.remote_id, organization_path(organization)
+    end
     actions
   end
 
@@ -55,7 +57,7 @@ ActiveAdmin.register Organization do
       row :topics
       row :notes
       row :always_open
-      row :remote_id
+      row 'Remote ID', &:remote_id
     end
   end
 
@@ -109,7 +111,7 @@ ActiveAdmin.register Organization do
           input :sms_number
           input :chat_url
           input :url
-          input :remote_id
+          input :remote_id, label: 'Remote ID'
         end
       end
     end
