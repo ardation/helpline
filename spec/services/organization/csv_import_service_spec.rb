@@ -104,5 +104,14 @@ RSpec.describe Organization::CsvImportService, type: :service do
         )
       end
     end
+
+    context 'when csv row is always_open' do
+      let(:csv) { file_fixture('services/organization/csv_import_service/valid_organization_always_open.csv') }
+
+      it 'sets always_open to true' do
+        described_class.import(csv)
+        expect(organization.always_open).to eq(true)
+      end
+    end
   end
 end
