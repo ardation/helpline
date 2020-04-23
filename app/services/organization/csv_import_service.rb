@@ -68,15 +68,25 @@ class Organization
 
     def update_opening_hours_from_row(row, organization)
       attributes = row.to_hash
-      Organization::OpeningHour.days.each do |day, _index|
-        next unless attributes["#{day}_open"] && attributes["#{day}_close"]
 
-        organization.opening_hours.build(
-          day: day,
-          open: DateTime.parse(attributes["#{day}_open"]),
-          close: DateTime.parse(attributes["#{day}_close"])
-        )
+      if attributes['always_open']&.downcase == 'yes'
+        organization.always_open = true
+        return
       end
+
+      Organization::OpeningHour.days.each_key do |day|
+        build_opening_hour(organization, attributes, day)
+      end
+    end
+
+    def build_opening_hour(organization, attributes, day)
+      return unless attributes["#{day}_open"].present? && attributes["#{day}_close"].present?
+
+      organization.opening_hours.build(
+        day: day,
+        open: DateTime.parse(attributes["#{day}_open"]),
+        close: DateTime.parse(attributes["#{day}_close"])
+      )
     end
   end
 end
