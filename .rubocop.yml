@@ -33,3 +33,4 @@ Metrics/BlockLength:
   Exclude:
     - app/admin/**/*
     - spec/**/*
+    - config/environments/**/*
