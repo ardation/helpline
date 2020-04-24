@@ -57,11 +57,29 @@ RSpec.describe Organization, type: :model do
       it 'returns organizations' do
         expect(described_class.filter_by_country_code('nz')).to match_array [organization_1, organization_2]
       end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(country_code: 'nz')).to match_array [organization_1, organization_2]
+      end
     end
 
     describe '.filter_by_subdivison_codes' do
       it 'returns organizations' do
         expect(described_class.filter_by_subdivision_codes(['auk'])).to match_array [organization_2]
+      end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(subdivision_codes: ['auk'])).to match_array [organization_2]
+      end
+
+      it 'returns organizations when empty' do
+        expect(
+          described_class.filter_by_country_code('nz').filter_by_subdivision_codes([])
+        ).to match_array [organization_1]
+      end
+
+      it 'allows use by filter when empty' do
+        expect(described_class.filter(country_code: 'nz', subdivision_codes: [])).to match_array [organization_1]
       end
     end
 
@@ -69,17 +87,29 @@ RSpec.describe Organization, type: :model do
       it 'returns organizations' do
         expect(described_class.filter_by_categories(['category_0'])).to match_array [organization_0]
       end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(categories: ['category_0'])).to match_array [organization_0]
+      end
     end
 
     describe '.filter_by_human_support_type' do
       it 'returns organizations' do
         expect(described_class.filter_by_human_support_types(['human_support_type_0'])).to match_array [organization_0]
       end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(human_support_types: ['human_support_type_0'])).to match_array [organization_0]
+      end
     end
 
     describe '.filter_by_topics' do
       it 'returns organizations' do
         expect(described_class.filter_by_topics(['topic_0'])).to match_array [organization_0]
+      end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(topics: ['topic_0'])).to match_array [organization_0]
       end
     end
   end

@@ -5,7 +5,10 @@ module Queries
     description 'Find all organizations'
 
     argument :country_code, String, required: false, description: 'Filter by countryCode'
-    argument :subdivision_codes, [String], required: false, description: 'Filter by subdivisionCodes'
+    argument :subdivision_codes,
+             [String],
+             required: false,
+             description: 'Filter by subdivisionCodes (when empty will return organizations with no subdivisions'
     argument :categories, [String], required: false, description: 'Filter by categories'
     argument :human_support_types, [String], required: false, description: 'Filter by humanSupportTypes'
     argument :topics, [String], required: false, description: 'Filter by topics'
