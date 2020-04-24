@@ -1,0 +1,11 @@
+<p>Hey <%= @import.user.email %>,</p>
+
+<p>Your organization CSV import is complete. You can login to see the results <a href="https://admin.findahelpline.com/organizations">here</a>.</p>
+
+<% if @import.error_message %>
+<%= @import.error_message.html_safe %>
+<% end %>
+
+<p>Thanks,</p>
+
+<a href="https://www.findahelpline.com">Find A Helpline Team</a>

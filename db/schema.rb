@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_043023) do
+ActiveRecord::Schema.define(version: 2020_04_24_073436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,16 @@ ActiveRecord::Schema.define(version: 2020_04_17_043023) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "organization_imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.text "content", null: false
+    t.text "error_message"
+    t.datetime "imported_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_organization_imports_on_user_id"
   end
 
   create_table "organization_opening_hours", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -133,6 +143,7 @@ ActiveRecord::Schema.define(version: 2020_04_17_043023) do
   end
 
   add_foreign_key "country_subdivisions", "countries"
+  add_foreign_key "organization_imports", "users"
   add_foreign_key "organization_opening_hours", "organizations"
   add_foreign_key "organization_subdivision_connections", "country_subdivisions", column: "subdivision_id"
   add_foreign_key "organization_subdivision_connections", "organizations"
