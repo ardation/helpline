@@ -3,27 +3,26 @@
 require 'csv'
 
 class Organization
-  class CsvImportService
-    class ValidationError < StandardError; end
-    attr_reader :file
+  class ImportService
+    attr_reader :record
 
-    def self.import(file)
-      new(file).import
+    def self.import(record)
+      new(record).import
     end
 
-    def initialize(file)
-      @file = file
+    def initialize(record)
+      @record = record
     end
 
     def import
       errors = []
-      CSV.parse(contents, headers: true).each.with_index(1) do |row, index|
+      CSV.parse(record.content, headers: true).each.with_index(1) do |row, index|
         organization = build_organization_from_row(row)
         update_opening_hours_from_row(row, organization)
 
         errors << "Row #{index}: #{organization.errors.full_messages.join(', ')}" unless organization.save
       end
-      raise ValidationError, "CSV imported with some errors! \n#{errors.join("\n")}" if errors.present?
+      return "CSV imported with some errors! \n#{errors.join("\n")}" if errors.present?
     end
 
     protected
@@ -53,10 +52,6 @@ class Organization
     def find_organization(name, country, remote_id)
       organization = Organization.find_by(remote_id: remote_id) if remote_id.present?
       organization || Organization.find_by(name: name, country: country.id.nil? ? nil : country)
-    end
-
-    def contents
-      CsvEncodingService.normalized_utf8(file.read)
     end
 
     def attributes_from_row(row)

@@ -24,9 +24,11 @@ gem 'rails', '~> 6.0.2'
 gem 'rails-observers'
 gem 'redis'
 gem 'rollbar'
+gem 'sidekiq'
 
 group :test do
   gem 'database_cleaner-active_record'
+  gem 'rspec-sidekiq'
   gem 'shoulda-matchers'
   gem 'webmock'
 end
@@ -46,6 +48,7 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'letter_opener'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-commands-rspec'

@@ -17,11 +17,8 @@ ActiveAdmin.register Organization do
   end
 
   collection_action :import_csv, method: :post do
-    Organization::CsvImportService.import(params[:csv][:file])
-    flash[:notice] = 'CSV imported successfully!'
-    redirect_to action: :index
-  rescue Organization::CsvImportService::ValidationError => e
-    flash[:alert] = simple_format(e.message)
+    current_user.organization_imports.create(content: params[:csv][:file].read)
+    flash[:notice] = 'CSV importing in background! Find A Helpline will email you when the import has been completed.'
     redirect_to action: :index
   end
 

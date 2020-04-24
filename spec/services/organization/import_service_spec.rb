@@ -2,8 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Organization::CsvImportService, type: :service do
-  let(:csv) { file_fixture('services/organization/csv_import_service/valid_organization.csv') }
+RSpec.describe Organization::ImportService, type: :service do
+  let(:csv) { file_fixture('services/organization/import_service/valid_organization.csv') }
+  let(:import) { create(:organization_import, content: csv.read) }
 
   describe '.import' do
     let(:organization) { Organization.first }
@@ -33,38 +34,38 @@ RSpec.describe Organization::CsvImportService, type: :service do
     end
 
     it 'creates organization' do
-      expect { described_class.import(csv) }.to change(Organization, :count).by(1)
+      expect { described_class.import(import) }.to change(Organization, :count).by(1)
     end
 
     it 'has the correct organization attributes' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(organization.attributes).to include(organization_attributes)
     end
 
     it 'has the correct human_support_type_list' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(organization.human_support_type_list).to match_array ['Volunteers', 'Paid Staff']
     end
 
     it 'has the correct topic_list' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(organization.topic_list).to match_array %w[Anxiety Bullying]
     end
 
     it 'has the correct category_list' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(organization.category_list).to match_array ['All topics', 'For youth']
     end
 
     it 'has the correct subdivisions' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(organization.subdivisions).to match_array [
         Country::Subdivision.find_by(code: 'AUK'), Country::Subdivision.find_by(code: 'BOP')
       ]
     end
 
     it 'has the correct opening_hour attributes' do
-      described_class.import(csv)
+      described_class.import(import)
       expect(opening_hour.attributes).to include(opening_hour_attributes)
     end
 
@@ -72,11 +73,11 @@ RSpec.describe Organization::CsvImportService, type: :service do
       let!(:organization) { create(:organization, name: 'Youthline', country: create(:country, code: 'NZ')) }
 
       it 'does not create organization' do
-        expect { described_class.import(csv) }.not_to change(Organization, :count)
+        expect { described_class.import(import) }.not_to change(Organization, :count)
       end
 
       it 'has the correct attributes' do
-        described_class.import(csv)
+        described_class.import(import)
         expect(organization.reload.attributes).to include(organization_attributes)
       end
     end
@@ -85,31 +86,30 @@ RSpec.describe Organization::CsvImportService, type: :service do
       let!(:organization) { create(:organization, remote_id: 'TestRemoteId') }
 
       it 'does not create organization' do
-        expect { described_class.import(csv) }.not_to change(Organization, :count)
+        expect { described_class.import(import) }.not_to change(Organization, :count)
       end
 
       it 'has the correct attributes' do
-        described_class.import(csv)
+        described_class.import(import)
         expect(organization.reload.attributes).to include(organization_attributes)
       end
     end
 
     context 'when csv row is invalid' do
-      let(:csv) { file_fixture('services/organization/csv_import_service/invalid_organization.csv') }
+      let(:csv) { file_fixture('services/organization/import_service/invalid_organization.csv') }
 
-      it 'raises error' do
-        expect { described_class.import(csv) }.to raise_error(
-          Organization::CsvImportService::ValidationError,
+      it 'returns error as string' do
+        expect(described_class.import(import)).to match(
           /Row 1: Country must exist, Name can't be blank/
         )
       end
     end
 
     context 'when csv row is always_open' do
-      let(:csv) { file_fixture('services/organization/csv_import_service/valid_organization_always_open.csv') }
+      let(:csv) { file_fixture('services/organization/import_service/valid_organization_always_open.csv') }
 
       it 'sets always_open to true' do
-        described_class.import(csv)
+        described_class.import(import)
         expect(organization.always_open).to eq(true)
       end
     end
