@@ -41,6 +41,8 @@ class TagsInput < ActiveAdminAddons::InputBase
     concat(builder.select(build_virtual_attr, [], {}, input_html_options))
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def render_selected_hidden_items
     template.content_tag(:div, id: selected_values_id) do
       template.concat(build_hidden_control(empty_input_id, method_to_input_array_name, ''))
@@ -55,4 +57,6 @@ class TagsInput < ActiveAdminAddons::InputBase
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 end
