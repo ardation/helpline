@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Organization do
-  permit_params :name, :country_id, :category_list, :human_support_type_list, :topic_list, :remote_id,
-                :phone_word, :phone_number, :sms_word, :sms_number, :chat_url, :url, :notes, :timezone, :always_open,
+  permit_params :name, :country_id, :remote_id, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url,
+                :url, :notes, :timezone, :always_open, :featured,
+                :category_list, :human_support_type_list, :topic_list,
                 opening_hours_attributes: %i[id day open close _destroy], subdivision_ids: []
 
   filter :name
   filter :country
+
+  menu priority: 1
+
+  scope :all, default: true
+  scope(:featured) { |scope| scope.filter_by_featured(true) }
 
   action_item :import_csv, only: :index do
     link_to 'Import from CSV', action: 'upload_csv'
@@ -32,6 +38,7 @@ ActiveAdmin.register Organization do
     column 'Remote ID', sortable: :remote_id do |organization|
       link_to organization.remote_id, organization_path(organization)
     end
+    toggle_bool_column :featured
     actions
   end
 

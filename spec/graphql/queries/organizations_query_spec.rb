@@ -11,7 +11,8 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
       country: create(:country, code: 'AU'),
       category_list: ['category_0'],
       human_support_type_list: ['human_support_type_0'],
-      topic_list: ['topic_0']
+      topic_list: ['topic_0'],
+      featured: true
     )
   end
   let(:country_nz) { create(:country, code: 'NZ') }
@@ -100,6 +101,14 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
 
     it 'returns organizations filtered by topics' do
       post '/', params: { query: query('(topics: ["topic_0"])') }
+
+      expect(data).to match_array [
+        hash_including(attributes_0)
+      ]
+    end
+
+    it 'returns organizations filtered by featured' do
+      post '/', params: { query: query('(featured: true)') }
 
       expect(data).to match_array [
         hash_including(attributes_0)
