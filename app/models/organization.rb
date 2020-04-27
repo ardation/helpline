@@ -26,6 +26,7 @@ class Organization < ApplicationRecord
   scope :filter_by_categories, ->(tags) { tagged_with(tags, on: :categories) }
   scope :filter_by_human_support_types, ->(tags) { tagged_with(tags, on: :human_support_types) }
   scope :filter_by_topics, ->(tags) { tagged_with(tags, on: :topics) }
+  scope :filter_by_featured, ->(featured) { where(featured: featured) }
 
   def should_generate_new_friendly_id?
     name_changed?

@@ -1,5 +1,5 @@
-$am-theme-primary: #00689f;
-$am-theme-accent: #7dd2f7;
+$am-theme-primary: #07838E;
+$am-theme-accent: #CC001E;
 $am-theme-accent-fallback: #ff7547;
 
 @import 'activeadmin_addons/all';
@@ -8,6 +8,7 @@ $am-theme-accent-fallback: #ff7547;
 .columns {
   display: grid;
   grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   .column {
     width: 100% !important;
   }
@@ -41,7 +42,7 @@ $am-theme-accent-fallback: #ff7547;
 
 .select2-container {
   .select2-selection--multiple {
-    height: 42px;
+    min-height: 42px;
     border: 1px solid #d3d3d3;
     .select2-selection__choice {
       line-height: 28px;
@@ -99,4 +100,49 @@ $am-theme-accent-fallback: #ff7547;
     }
   }
 }
-
+.has_nested ul {
+  top: 50px;
+}
+.header {
+  background: #181719;
+}
+#site_title {
+  padding: 0 0 0 15px;
+  #site_title_image {
+    height: 25px;
+  }
+}
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  border-radius: 1000px;
+  padding: 12px 20px;
+}
+fieldset.actions .cancel a,
+.buttons .cancel a {
+  border-radius: 1000px;
+  padding: 12px 20px;
+  &:hover {
+    color: #fff;
+  }
+}
+.scopes {
+  .scope-default-group {
+    margin: 0;
+  }
+  .scope {
+    margin-left: 0;
+    a {
+      padding: 20px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  .scope.selected a {
+    color: #fff;
+  }
+}
+.index_table th.col-featured {
+  text-align: center;
+}
