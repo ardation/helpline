@@ -12,6 +12,7 @@ module Queries
     argument :categories, [String], required: false, description: 'Filter by categories'
     argument :human_support_types, [String], required: false, description: 'Filter by humanSupportTypes'
     argument :topics, [String], required: false, description: 'Filter by topics'
+    argument :featured, Boolean, required: false, description: 'Filter by featured'
 
     type Types::OrganizationType.connection_type, null: false
 

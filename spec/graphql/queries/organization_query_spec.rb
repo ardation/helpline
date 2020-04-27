@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Queries::OrganizationQuery, type: :request do
   before { host! 'api.example.com' }
 
-  let(:organization) { create(:organization, :complete) }
+  let(:organization) { create(:organization, :complete, featured: true) }
   let!(:opening_hour) { create(:organization_opening_hour, organization: organization) }
 
   describe '.resolve' do
@@ -26,6 +26,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'smsNumber' => organization.sms_number,
         'timezone' => ActiveSupport::TimeZone[organization.timezone].tzinfo.name,
         'alwaysOpen' => organization.always_open,
+        'featured' => organization.featured,
         'subdivisions' =>
           match_array(organization.subdivisions.map { |t| { 'code' => t.code } }),
         'categories' =>
@@ -64,6 +65,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           smsNumber
           timezone
           alwaysOpen
+          featured
           country {
             code
           }

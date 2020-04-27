@@ -28,7 +28,8 @@ RSpec.describe Organization, type: :model do
         country: create(:country, code: 'AU'),
         category_list: ['category_0'],
         human_support_type_list: ['human_support_type_0'],
-        topic_list: ['topic_0']
+        topic_list: ['topic_0'],
+        featured: true
       )
     end
     let(:country_nz) { create(:country, code: 'NZ') }
@@ -110,6 +111,20 @@ RSpec.describe Organization, type: :model do
 
       it 'allows use by filter' do
         expect(described_class.filter(topics: ['topic_0'])).to match_array [organization_0]
+      end
+    end
+
+    describe '.filter_by_featured' do
+      it 'returns organizations when true' do
+        expect(described_class.filter_by_featured(true)).to match_array [organization_0]
+      end
+
+      it 'returns organizations when false' do
+        expect(described_class.filter_by_featured(false)).to match_array [organization_1, organization_2]
+      end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(featured: true)).to match_array [organization_0]
       end
     end
   end

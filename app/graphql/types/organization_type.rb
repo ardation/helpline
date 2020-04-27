@@ -20,6 +20,7 @@ module Types
     field :opening_hours, [Types::Organization::OpeningHourType], null: false
     field :subdivisions, [Types::Country::SubdivisionType], null: false
     field :always_open, Boolean, null: false
+    field :featured, Boolean, null: false
 
     def categories
       Loaders::AssociationLoader.for(::Organization, :categories).load(object)

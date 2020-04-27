@@ -8,6 +8,7 @@ ruby '2.6.6'
 gem 'activeadmin'
 gem 'activeadmin_addons'
 gem 'acts-as-taggable-on', '~> 6.0'
+gem 'awesome_print'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'charlock_holmes'
 gem 'countries'
