@@ -75,6 +75,14 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
       ]
     end
 
+    it 'returns organizations filtered by null subdivison_code and AUK' do
+      post '/', params: { query: query('(countryCode: "NZ", subdivisionCodes: [null, "AUK"])') }
+
+      expect(data).to match_array [
+        hash_including(attributes_1), hash_including(attributes_2)
+      ]
+    end
+
     it 'returns organizations filtered by categories' do
       post '/', params: { query: query('(categories: ["category_0"])') }
 

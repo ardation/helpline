@@ -6,9 +6,10 @@ module Queries
 
     argument :country_code, String, required: false, description: 'Filter by countryCode'
     argument :subdivision_codes,
-             [String],
+             [String, null: true],
              required: false,
-             description: 'Filter by subdivisionCodes (when empty will return organizations with no subdivisions'
+             description: 'Filter by subdivisionCodes (when empty will return organizations with no subdivisions, '\
+                          'when null is included will also return organizations with no subdivisions)'
     argument :categories, [String], required: false, description: 'Filter by categories'
     argument :human_support_types, [String], required: false, description: 'Filter by humanSupportTypes'
     argument :topics, [String], required: false, description: 'Filter by topics'
