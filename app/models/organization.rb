@@ -17,10 +17,15 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :opening_hours, allow_destroy: true
   scope :filter_by_country_code, ->(code) { joins(:country).where(countries: { code: code.upcase }) }
   scope :filter_by_subdivision_codes, lambda { |codes|
-    if codes.empty?
-      left_outer_joins(:subdivisions).where(country_subdivisions: { id: nil })
+    scope = left_outer_joins(:subdivisions)
+
+    if codes.empty? || codes == [nil]
+      scope.where(country_subdivisions: { id: nil })
+    elsif codes.include?(nil)
+      scope.where(country_subdivisions: { id: nil })
+           .or(scope.where(country_subdivisions: { code: codes.compact.map(&:upcase) }))
     else
-      joins(:subdivisions).where(country_subdivisions: { code: codes.map(&:upcase) })
+      scope.where(country_subdivisions: { code: codes.map(&:upcase) })
     end
   }
   scope :filter_by_categories, ->(tags) { tagged_with(tags, on: :categories) }

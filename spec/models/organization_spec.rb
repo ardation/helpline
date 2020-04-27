@@ -78,6 +78,18 @@ RSpec.describe Organization, type: :model do
         ).to match_array [organization_1]
       end
 
+      it 'returns organizations when nil' do
+        expect(
+          described_class.filter_by_country_code('nz').filter_by_subdivision_codes([nil])
+        ).to match_array [organization_1]
+      end
+
+      it 'returns national organizations and subdivision organizations when nil present' do
+        expect(
+          described_class.filter_by_country_code('nz').filter_by_subdivision_codes([nil, 'auk'])
+        ).to match_array [organization_1, organization_2]
+      end
+
       it 'allows use by filter when empty' do
         expect(described_class.filter(country_code: 'nz', subdivision_codes: [])).to match_array [organization_1]
       end
