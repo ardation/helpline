@@ -35,7 +35,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'awesome_print'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'faker'
