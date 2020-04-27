@@ -13,7 +13,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'charlock_holmes'
 gem 'countries'
 gem 'devise'
-gem 'friendly_id', '~> 5.2.4'
+gem 'friendly_id', '~> 5.3.0'
 gem 'graphql'
 gem 'graphql-batch'
 gem 'hiredis'
