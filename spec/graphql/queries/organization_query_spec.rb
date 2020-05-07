@@ -6,7 +6,31 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
   before { host! 'api.example.com' }
 
   let(:organization) { create(:organization, :complete, featured: true) }
-  let!(:opening_hour) { create(:organization_opening_hour, organization: organization) }
+  let!(:opening_hour_0) do
+    create(
+      :organization_opening_hour,
+      organization: organization,
+      day: 'tuesday'
+    )
+  end
+  let!(:opening_hour_1) do
+    create(
+      :organization_opening_hour,
+      organization: organization,
+      day: 'monday',
+      open: Time.current.beginning_of_day + 4.hours,
+      close: Time.current.beginning_of_day + 5.hours
+    )
+  end
+  let!(:opening_hour_2) do
+    create(
+      :organization_opening_hour,
+      organization: organization,
+      day: 'monday',
+      open: Time.current.beginning_of_day + 2.hours,
+      close: Time.current.beginning_of_day + 3.hours
+    )
+  end
 
   describe '.resolve' do
     let(:data) { JSON.parse(response.body)['data']['organization'] }
@@ -36,10 +60,20 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'topics' =>
           match_array(organization.topics.map { |t| { 'name' => t.name } }),
         'openingHours' => [{
-          'id' => opening_hour.id,
-          'open' => opening_hour.open.iso8601,
-          'close' => opening_hour.close.iso8601,
-          'day' => opening_hour.day
+          'id' => opening_hour_2.id,
+          'open' => opening_hour_2.open.iso8601,
+          'close' => opening_hour_2.close.iso8601,
+          'day' => opening_hour_2.day
+        }, {
+          'id' => opening_hour_1.id,
+          'open' => opening_hour_1.open.iso8601,
+          'close' => opening_hour_1.close.iso8601,
+          'day' => opening_hour_1.day
+        }, {
+          'id' => opening_hour_0.id,
+          'open' => opening_hour_0.open.iso8601,
+          'close' => opening_hour_0.close.iso8601,
+          'day' => opening_hour_0.day
         }]
       }
     end

@@ -6,7 +6,7 @@ class Organization < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
   belongs_to :country
-  has_many :opening_hours, dependent: :destroy
+  has_many :opening_hours, -> { order(day: :asc, open: :asc) }, dependent: :destroy, inverse_of: :organization
   has_many :subdivision_connections, dependent: :destroy
   has_many :subdivisions, through: :subdivision_connections, class_name: 'Country::Subdivision'
   validates :name, presence: true, uniqueness: { scope: :country_id }
