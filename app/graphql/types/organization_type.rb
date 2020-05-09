@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 module Types
-  class OrganizationType < BaseObject
-    field :id, ID, null: false
+  class OrganizationType < Types::BaseRecord
     field :name, String, null: false
     field :slug, String, null: false
-
     field :country, Types::CountryType, null: false
     field :categories, [Types::TagType], null: false
     field :chat_url, String, null: true
@@ -18,9 +16,12 @@ module Types
     field :timezone, String, null: false
     field :url, String, null: true
     field :opening_hours, [Types::Organization::OpeningHourType], null: false
+    field :reviews, [Types::Organization::ReviewType], null: false
     field :subdivisions, [Types::Country::SubdivisionType], null: false
     field :always_open, Boolean, null: false
     field :featured, Boolean, null: false
+    field :review_count, Integer, null: false
+    field :rating, Float, null: false
 
     def categories
       Loaders::AssociationLoader.for(::Organization, :categories).load(object)
@@ -44,6 +45,10 @@ module Types
 
     def timezone
       ActiveSupport::TimeZone[object.timezone].tzinfo.name
+    end
+
+    def reviews
+      Loaders::AssociationLoader.for(::Organization, :published_reviews).load(object)
     end
   end
 end

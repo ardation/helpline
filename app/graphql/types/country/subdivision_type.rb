@@ -2,8 +2,7 @@
 
 module Types
   module Country
-    class SubdivisionType < BaseObject
-      field :id, ID, null: false
+    class SubdivisionType < Types::BaseRecord
       field :code, String, null: false
       field :name, String, null: false
       field :country, Types::CountryType, null: false

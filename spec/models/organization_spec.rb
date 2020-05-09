@@ -7,6 +7,8 @@ RSpec.describe Organization, type: :model do
 
   it { is_expected.to belong_to(:country).required }
   it { is_expected.to have_many(:opening_hours).dependent(:destroy) }
+  it { is_expected.to have_many(:reviews).dependent(:destroy) }
+  it { is_expected.to have_many(:published_reviews) }
   it { is_expected.to have_many(:subdivision_connections).dependent(:destroy) }
   it { is_expected.to have_many(:subdivisions).through(:subdivision_connections) }
   it { is_expected.to validate_presence_of(:name) }
@@ -20,6 +22,21 @@ RSpec.describe Organization, type: :model do
   it { is_expected.to allow_values(*ActiveSupport::TimeZone.all.map(&:name)).for(:timezone) }
   it { is_expected.not_to allow_values('test', 'place').for(:timezone) }
   it { is_expected.to accept_nested_attributes_for(:opening_hours).allow_destroy(true) }
+
+  describe '#published_reviews' do
+    subject(:organization) { create(:organization) }
+
+    let!(:review) { create(:organization_review, published: true, organization: organization) }
+
+    before do
+      create(:organization_review, organization: organization)
+      create(:organization_review, published: true)
+    end
+
+    it 'returns published reviews' do
+      expect(organization.published_reviews).to eq [review]
+    end
+  end
 
   context 'when .filter_by_*' do
     let!(:organization_0) do
@@ -202,6 +219,24 @@ RSpec.describe Organization, type: :model do
     it 'sets remote_id' do
       organization.remote_id = 'remote_id'
       expect(organization.remote_id).to eq 'remote_id'
+    end
+  end
+
+  describe '#update_review_statistics' do
+    before do
+      create(:organization_review, organization: organization, rating: 5, published: true)
+      create(:organization_review, organization: organization, rating: 5, published: false)
+      create(:organization_review, organization: organization, rating: 2, published: true)
+    end
+
+    it 'sets rating' do
+      organization.update_review_statistics
+      expect(organization.rating).to eq 3.5
+    end
+
+    it 'sets review_count' do
+      organization.update_review_statistics
+      expect(organization.review_count).to eq 2
     end
   end
 end
