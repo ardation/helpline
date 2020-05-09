@@ -11,9 +11,16 @@ ActiveAdmin.register Organization::Review, as: 'Review' do
   batch_action :destroy, false
 
   batch_action :toggle_published do |ids|
+    reviews = Organization::Review.where(id: ids)
     # rubocop:disable Rails/SkipsModelValidations
-    Organization::Review.where(id: ids).update_all('published = NOT published')
+    reviews.update_all('published = NOT published')
     # rubocop:enable Rails/SkipsModelValidations
+
+    Sidekiq::Client.push_bulk(
+      'class' => Organization::UpdateReviewStatisticsWorker,
+      'args' => reviews.distinct.pluck(:organization_id).map { |id| [id] }
+    )
+
     flash[:notice] = 'Toggled published state on selected reviews!'
     redirect_to collection_path
   end
