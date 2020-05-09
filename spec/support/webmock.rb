@@ -11,5 +11,10 @@ RSpec.configure do |config|
         }
       )
       .to_return(status: 200, body: '', headers: {})
+    stub_request(
+      :get,
+      'https://www.recaptcha.net/recaptcha/api/siteverify'\
+      "?remoteip=127.0.0.1&response=abc&secret=#{ENV['RECAPTCHA_SECRET_KEY']}"
+    ).to_return(body: { success: true, score: 0.5 }.to_json)
   end
 end

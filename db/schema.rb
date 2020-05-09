@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_07_095502) do
+ActiveRecord::Schema.define(version: 2020_05_08_052659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -63,6 +63,20 @@ ActiveRecord::Schema.define(version: 2020_05_07_095502) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["organization_id"], name: "index_organization_opening_hours_on_organization_id"
+  end
+
+  create_table "organization_reviews", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.integer "rating", default: 0, null: false
+    t.text "content"
+    t.integer "response_time", default: 0, null: false
+    t.float "recaptcha_score", default: 0.0, null: false
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_organization_reviews_on_organization_id"
+    t.index ["published"], name: "index_organization_reviews_on_published"
+    t.index ["rating"], name: "index_organization_reviews_on_rating"
   end
 
   create_table "organization_subdivision_connections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -145,6 +159,7 @@ ActiveRecord::Schema.define(version: 2020_05_07_095502) do
   add_foreign_key "country_subdivisions", "countries"
   add_foreign_key "organization_imports", "users"
   add_foreign_key "organization_opening_hours", "organizations"
+  add_foreign_key "organization_reviews", "organizations"
   add_foreign_key "organization_subdivision_connections", "country_subdivisions", column: "subdivision_id"
   add_foreign_key "organization_subdivision_connections", "organizations"
   add_foreign_key "organizations", "countries"

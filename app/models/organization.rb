@@ -8,6 +8,11 @@ class Organization < ApplicationRecord
   belongs_to :country
   has_many :opening_hours, -> { order(day: :asc, open: :asc) }, dependent: :destroy, inverse_of: :organization
   has_many :subdivision_connections, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :published_reviews,
+           -> { published },
+           class_name: 'Organization::Review',
+           inverse_of: :organization
   has_many :subdivisions, through: :subdivision_connections, class_name: 'Country::Subdivision'
   validates :name, presence: true, uniqueness: { scope: :country_id }
   validates :remote_id, uniqueness: true, allow_nil: true

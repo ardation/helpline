@@ -3,7 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Queries::OrganizationQuery, type: :request do
-  before { host! 'api.example.com' }
+  before do
+    host! 'api.example.com'
+    create(:organization_review, organization: organization)
+  end
 
   let(:organization) { create(:organization, :complete, featured: true) }
   let!(:opening_hour_0) do
@@ -30,6 +33,9 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
       open: Time.current.beginning_of_day + 2.hours,
       close: Time.current.beginning_of_day + 3.hours
     )
+  end
+  let!(:review) do
+    create(:organization_review, organization: organization, published: true)
   end
 
   describe '.resolve' do
@@ -74,6 +80,11 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           'open' => opening_hour_0.open.iso8601,
           'close' => opening_hour_0.close.iso8601,
           'day' => opening_hour_0.day
+        }],
+        'reviews' => [{
+          'id' => review.id,
+          'rating' => review.rating,
+          'content' => review.content,
         }]
       }
     end
@@ -121,6 +132,11 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
             close
             day
           }
+          reviews {
+            id
+            rating
+            content
+           }
         }
       }
     GQL
