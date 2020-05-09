@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Queries::OrganizationQuery, type: :request do
+RSpec.describe Mutations::Organization::Review::CreateMutation, type: :request do
   before { host! 'api.example.com' }
 
   let(:organization) { create(:organization) }
