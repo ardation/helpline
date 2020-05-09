@@ -12,6 +12,7 @@ class Organization
     validates :response_time, presence: true, numericality: { greater_than_or_equal_to: 0, only_integer: true }
     validates :recaptcha_token, :remote_ip, presence: true, on: :create
     validate :validate_recaptcha, on: :create
+    after_commit :queue_organization_update_review_statistics_worker, on: :update, if: :saved_change_to_published?
     scope :published, -> { where(published: true) }
     scope :unpublished, -> { where(published: false) }
 
@@ -25,6 +26,10 @@ class Organization
 
     def request
       OpenStruct.new(remote_ip: remote_ip)
+    end
+
+    def queue_organization_update_review_statistics_worker
+      Organization::UpdateReviewStatisticsWorker.perform_async(organization_id)
     end
   end
 end

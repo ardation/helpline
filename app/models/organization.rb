@@ -45,4 +45,8 @@ class Organization < ApplicationRecord
   def remote_id=(remote_id)
     super remote_id.presence
   end
+
+  def update_review_statistics
+    update(rating: published_reviews.average(:rating), review_count: published_reviews.count)
+  end
 end

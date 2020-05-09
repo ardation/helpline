@@ -61,4 +61,13 @@ RSpec.describe Organization::Review, type: :model do
       end
     end
   end
+
+  describe '#queue_organization_update_review_statistics_worker' do
+    subject(:review) { create(:organization_review) }
+
+    it 'queues worker' do
+      review.update(published: true)
+      expect(Organization::UpdateReviewStatisticsWorker).to have_enqueued_sidekiq_job(review.organization_id)
+    end
+  end
 end
