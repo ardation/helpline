@@ -27,11 +27,13 @@ ActiveAdmin.register Organization::Review, as: 'Review' do
 
   index do
     selectable_column
+    id_column
     column :organization
     column :rating
     column :response_time
     column :recaptcha_score
-    column(:content) { |review| status_tag(review.content.present?) }
+    column :content
+    column :created_at
     actions
   end
 
