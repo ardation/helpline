@@ -60,6 +60,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'featured' => organization.featured,
         'rating' => organization.rating,
         'reviewCount' => organization.review_count,
+        'notes' => organization.notes,
         'subdivisions' =>
           match_array(organization.subdivisions.map { |t| { 'code' => t.code } }),
         'categories' =>
@@ -116,6 +117,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           featured
           rating
           reviewCount
+          notes
           country {
             code
           }

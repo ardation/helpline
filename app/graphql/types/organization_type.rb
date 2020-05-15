@@ -22,6 +22,7 @@ module Types
     field :featured, Boolean, null: false
     field :review_count, Integer, null: false
     field :rating, Float, null: false
+    field :notes, String, null: true
 
     def categories
       Loaders::AssociationLoader.for(::Organization, :categories).load(object)
