@@ -16,6 +16,7 @@ FactoryBot.define do
       sms_number { Faker::PhoneNumber.phone_number }
       sms_word { Faker::Lorem.word }
       url { Faker::Internet.url }
+      notes { Faker::Lorem.paragraph }
       after(:build) do |organization|
         if organization.subdivisions.empty?
           organization.subdivisions.build(code: 'AL', country: organization.country)
