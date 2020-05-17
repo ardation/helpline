@@ -22,5 +22,13 @@ RSpec.describe Organization::ImportMailer, type: :mailer do
     it 'renders the body' do
       expect(mail.body.encoded).to match("Hey #{import.user.email},")
     end
+
+    context 'when import does not exist' do
+      let(:mail) { described_class.notify(SecureRandom.uuid) }
+
+      it 'does not raise error' do
+        expect { mail }.not_to raise_error
+      end
+    end
   end
 end

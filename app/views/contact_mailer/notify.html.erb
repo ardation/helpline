@@ -1,0 +1,10 @@
+<p>Hey there,</p>
+<p>We've received an contact submission via the website with the following message:</p>
+<p><%= sanitize @contact.subject %></p>
+<p><%= sanitize @contact.message %></p>
+<p>
+  The submission has a recaptcha score of <%= @contact.recaptcha_score %>.
+  A score of less than 0.5 is probably machine generated.
+</p>
+<p>Thanks,</p>
+<a href="https://www.findahelpline.com">Find A Helpline Team</a>

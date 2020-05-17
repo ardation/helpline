@@ -4,6 +4,7 @@ module Mutations
   module Organization
     module Review
       class CreateMutation < Mutations::BaseMutation
+        graphql_name 'OrganizationReviewCreateMutation'
         argument :organization_id, ID, required: true
         argument :rating, Int, required: true
         argument :response_time, Int, required: true

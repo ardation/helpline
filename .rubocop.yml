@@ -38,3 +38,6 @@ Metrics/BlockLength:
     - app/admin/**/*
     - spec/**/*
     - config/environments/**/*
+RSpec/EmptyLineAfterSubject:
+  Exclude:
+    - spec/factories/**/*
