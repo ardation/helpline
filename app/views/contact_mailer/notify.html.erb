@@ -1,10 +1,11 @@
 <p>Hey there,</p>
-<p>We've received an contact submission via the website with the following message:</p>
-<p><%= sanitize @contact.subject %></p>
-<p><%= sanitize @contact.message %></p>
+<p>We've received an contact submission via the website from <%= mail_to @contact.email %> with the following message:</p>
+<p><strong>Subject:</strong> <%= sanitize @contact.subject %></p>
+<p><strong>Message:</strong> <%= sanitize @contact.message %></p>
 <p>
   The submission has a recaptcha score of <%= @contact.recaptcha_score %>.
-  A score of less than 0.5 is probably machine generated.
+  A score of less than 0.5 indicates that this submission was probably machine generated.
 </p>
+<p>Replying to this message will send a reply directly to <%= mail_to @contact.email %>.</p>
 <p>Thanks,</p>
 <a href="https://www.findahelpline.com">Find A Helpline Team</a>
