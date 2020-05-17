@@ -8,7 +8,7 @@ RSpec.describe ContactMailer, type: :mailer do
     let(:mail) { described_class.notify(contact.id) }
 
     it 'sets subject' do
-      expect(mail.subject).to eq(contact.subject)
+      expect(mail.subject).to eq('New contact submission on Find A Helpline')
     end
 
     it 'sets to address' do
@@ -23,7 +23,11 @@ RSpec.describe ContactMailer, type: :mailer do
       expect(mail.reply_to).to eq([contact.email])
     end
 
-    it 'renders the body' do
+    it 'renders the body with subject' do
+      expect(mail.body.encoded).to match(contact.subject)
+    end
+
+    it 'renders the body with message' do
       expect(mail.body.encoded).to match(contact.message)
     end
 

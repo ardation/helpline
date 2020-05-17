@@ -6,6 +6,6 @@ class ContactMailer < ApplicationMailer
 
     return unless @contact
 
-    mail(to: ENV.fetch('CONTACT_EMAIL'), reply_to: @contact.email, subject: @contact.subject)
+    mail(to: ENV.fetch('CONTACT_EMAIL'), reply_to: @contact.email, subject: 'New contact submission on Find A Helpline')
   end
 end
