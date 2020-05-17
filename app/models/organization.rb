@@ -47,6 +47,6 @@ class Organization < ApplicationRecord
   end
 
   def update_review_statistics
-    update(rating: published_reviews.average(:rating), review_count: published_reviews.count)
+    update(rating: published_reviews.average(:rating) || 0, review_count: published_reviews.count)
   end
 end

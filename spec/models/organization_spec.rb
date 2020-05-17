@@ -223,20 +223,27 @@ RSpec.describe Organization, type: :model do
   end
 
   describe '#update_review_statistics' do
-    before do
-      create(:organization_review, organization: organization, rating: 5, published: true)
-      create(:organization_review, organization: organization, rating: 5, published: false)
-      create(:organization_review, organization: organization, rating: 2, published: true)
-    end
-
     it 'sets rating' do
       organization.update_review_statistics
-      expect(organization.rating).to eq 3.5
+      expect(organization.rating).to eq 0
     end
 
-    it 'sets review_count' do
-      organization.update_review_statistics
-      expect(organization.review_count).to eq 2
+    context 'when reviews exist' do
+      before do
+        create(:organization_review, organization: organization, rating: 5, published: true)
+        create(:organization_review, organization: organization, rating: 5, published: false)
+        create(:organization_review, organization: organization, rating: 2, published: true)
+      end
+
+      it 'sets rating' do
+        organization.update_review_statistics
+        expect(organization.rating).to eq 3.5
+      end
+
+      it 'sets review_count' do
+        organization.update_review_statistics
+        expect(organization.review_count).to eq 2
+      end
     end
   end
 end
