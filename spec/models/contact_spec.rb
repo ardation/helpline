@@ -11,7 +11,7 @@ RSpec.describe Contact, type: :model do
   it { is_expected.to validate_presence_of(:recaptcha_token).on(:create) }
   it { is_expected.to validate_presence_of(:remote_ip).on(:create) }
   it { is_expected.to allow_value('email@addresse.foo').for(:email) }
-  it { is_expected.to_not allow_value('foo').for(:email) }
+  it { is_expected.not_to allow_value('foo').for(:email) }
 
   describe '#validate_recaptcha' do
     it 'sets recaptcha_score' do
@@ -36,6 +36,17 @@ RSpec.describe Contact, type: :model do
         contact.save
         expect(contact.errors.messages[:base]).to eq ['reCAPTCHA verification failed, please try again.']
       end
+    end
+  end
+
+  describe '#queue_mailer' do
+    subject(:contact) { build(:contact, id: SecureRandom.uuid) }
+
+    it 'sends notification email' do
+      expect { contact.save }.to(
+        have_enqueued_job.on_queue('mailers')
+                         .with('ContactMailer', 'notify', 'deliver_now', args: [contact.id])
+      )
     end
   end
 end

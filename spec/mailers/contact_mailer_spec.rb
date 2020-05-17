@@ -2,28 +2,32 @@
 
 require 'rails_helper'
 
-RSpec.describe Organization::ImportMailer, type: :mailer do
+RSpec.describe ContactMailer, type: :mailer do
   describe '#notify' do
-    let(:import) { create(:organization_import) }
-    let(:mail) { described_class.notify(import.id) }
+    let(:contact) { create(:contact) }
+    let(:mail) { described_class.notify(contact.id) }
 
     it 'sets subject' do
-      expect(mail.subject).to eq('Your organization CSV import is complete')
+      expect(mail.subject).to eq(contact.subject)
     end
 
     it 'sets to address' do
-      expect(mail.to).to eq([import.user.email])
+      expect(mail.to).to eq(['contact@example.com'])
     end
 
     it 'sets from address' do
       expect(mail.from).to eq(['noreply@findahelpline.com'])
     end
 
-    it 'renders the body' do
-      expect(mail.body.encoded).to match("Hey #{import.user.email},")
+    it 'sets reply_to address' do
+      expect(mail.reply_to).to eq([contact.email])
     end
 
-    context 'when import does not exist' do
+    it 'renders the body' do
+      expect(mail.body.encoded).to match(contact.message)
+    end
+
+    context 'when contact does not exist' do
       let(:mail) { described_class.notify(SecureRandom.uuid) }
 
       it 'does not raise error' do
