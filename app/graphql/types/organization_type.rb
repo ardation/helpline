@@ -20,6 +20,7 @@ module Types
     field :subdivisions, [Types::Country::SubdivisionType], null: false
     field :always_open, Boolean, null: false
     field :featured, Boolean, null: false
+    field :verified, Boolean, null: false
     field :review_count, Integer, null: false
     field :rating, Float, null: false
     field :notes, String, null: true
