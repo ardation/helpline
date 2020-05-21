@@ -291,6 +291,8 @@ GEM
       rspec-expectations (~> 3.9)
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
+    rspec-retry (0.6.2)
+      rspec-core (> 3.3)
     rspec-sidekiq (3.0.3)
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
@@ -404,6 +406,7 @@ DEPENDENCIES
   redis
   rollbar
   rspec-rails
+  rspec-retry
   rspec-sidekiq
   rubocop-rails
   rubocop-rspec

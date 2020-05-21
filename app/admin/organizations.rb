@@ -2,7 +2,7 @@
 
 ActiveAdmin.register Organization do
   permit_params :name, :country_id, :remote_id, :phone_word, :phone_number, :sms_word, :sms_number, :chat_url,
-                :url, :notes, :timezone, :always_open, :featured,
+                :url, :notes, :timezone, :always_open, :featured, :verified,
                 :category_list, :human_support_type_list, :topic_list,
                 opening_hours_attributes: %i[id day open close _destroy], subdivision_ids: []
 
@@ -13,6 +13,7 @@ ActiveAdmin.register Organization do
 
   scope :all, default: true
   scope(:featured) { |scope| scope.filter_by_featured(true) }
+  scope(:verified) { |scope| scope.filter_by_verified(true) }
 
   action_item :import_csv, only: :index do
     link_to 'Import from CSV', action: 'upload_csv'
@@ -39,6 +40,7 @@ ActiveAdmin.register Organization do
       link_to organization.remote_id, organization_path(organization)
     end
     toggle_bool_column :featured
+    toggle_bool_column :verified
     actions
   end
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Queries::OrganizationQuery, type: :request do
-  let(:organization) { create(:organization, :complete, featured: true) }
+  let(:organization) { create(:organization, :complete, featured: true, verified: true) }
   let!(:opening_hour_0) do
     create(
       :organization_opening_hour,
@@ -58,6 +58,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
         'timezone' => ActiveSupport::TimeZone[organization.timezone].tzinfo.name,
         'alwaysOpen' => organization.always_open,
         'featured' => organization.featured,
+        'verified' => organization.verified,
         'rating' => organization.rating,
         'reviewCount' => organization.review_count,
         'notes' => organization.notes,
@@ -115,6 +116,7 @@ RSpec.describe Queries::OrganizationQuery, type: :request do
           timezone
           alwaysOpen
           featured
+          verified
           rating
           reviewCount
           notes

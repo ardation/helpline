@@ -14,6 +14,7 @@ module Queries
     argument :human_support_types, [String], required: false, description: 'Filter by humanSupportTypes'
     argument :topics, [String], required: false, description: 'Filter by topics'
     argument :featured, Boolean, required: false, description: 'Filter by featured'
+    argument :verified, Boolean, required: false, description: 'Filter by verified'
 
     type Types::OrganizationType.connection_type, null: false
 

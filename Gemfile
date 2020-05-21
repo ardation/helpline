@@ -30,6 +30,7 @@ gem 'sidekiq'
 
 group :test do
   gem 'database_cleaner-active_record'
+  gem 'rspec-retry'
   gem 'rspec-sidekiq'
   gem 'shoulda-matchers'
   gem 'webmock'
