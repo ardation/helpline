@@ -177,9 +177,9 @@ RSpec.describe Organization, type: :model do
     subject(:organization) { build(:organization, country: country) }
 
     let!(:country) { create(:country) }
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       organization.save
       expect(stub).to have_been_requested.once
@@ -189,9 +189,9 @@ RSpec.describe Organization, type: :model do
   describe '#after_save' do
     subject!(:organization) { create(:organization) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       organization.update(name: 'abc')
       expect(stub).to have_been_requested.once
@@ -201,9 +201,9 @@ RSpec.describe Organization, type: :model do
   describe '#after_destroy' do
     subject!(:organization) { create(:organization) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       organization.destroy
       expect(stub).to have_been_requested.once
