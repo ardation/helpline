@@ -20,8 +20,6 @@ RSpec.describe Influencer, type: :model do
     )
   end
 
-
-
   describe '#after_create' do
     subject(:influencer) { build(:influencer) }
 
