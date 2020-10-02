@@ -16,9 +16,9 @@ RSpec.describe Organization::SubdivisionConnection, type: :model do
 
     let!(:organization) { create(:organization) }
     let!(:subdivision) { create(:country_subdivision) }
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       subdivision_connection.save
       expect(stub).to have_been_requested.once
@@ -28,9 +28,9 @@ RSpec.describe Organization::SubdivisionConnection, type: :model do
   describe '#after_destroy' do
     subject!(:subdivision_connection) { create(:organization_subdivision_connection) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       subdivision_connection.destroy
       expect(stub).to have_been_requested.once

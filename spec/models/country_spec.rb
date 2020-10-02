@@ -37,9 +37,9 @@ RSpec.describe Country, type: :model do
   describe '#after_create' do
     subject(:country) { build(:country) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       country.save
       expect(stub).to have_been_requested.once
@@ -49,9 +49,9 @@ RSpec.describe Country, type: :model do
   describe '#after_save' do
     subject!(:country) { create(:country) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       country.update(code: 'NZ')
       expect(stub).to have_been_requested.once
@@ -61,9 +61,9 @@ RSpec.describe Country, type: :model do
   describe '#after_destroy' do
     subject!(:country) { create(:country) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       country.destroy
       expect(stub).to have_been_requested.once

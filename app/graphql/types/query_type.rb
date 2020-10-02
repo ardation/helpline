@@ -9,5 +9,6 @@ module Types
     field :topics, resolver: Queries::TopicsQuery
     field :organization, resolver: Queries::OrganizationQuery
     field :organizations, resolver: Queries::OrganizationsQuery
+    field :influencers, resolver: Queries::InfluencersQuery
   end
 end

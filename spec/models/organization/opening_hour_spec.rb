@@ -78,9 +78,9 @@ RSpec.describe Organization::OpeningHour, type: :model do
     subject(:opening_hour) { build(:organization_opening_hour, organization: organization) }
 
     let!(:organization) { create(:organization) }
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       opening_hour.save
       expect(stub).to have_been_requested.once
@@ -90,9 +90,9 @@ RSpec.describe Organization::OpeningHour, type: :model do
   describe '#after_save' do
     subject!(:opening_hour) { create(:organization_opening_hour) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       opening_hour.update(day: 'tuesday')
       expect(stub).to have_been_requested.once
@@ -102,9 +102,9 @@ RSpec.describe Organization::OpeningHour, type: :model do
   describe '#after_destroy' do
     subject!(:opening_hour) { create(:organization_opening_hour) }
 
-    let!(:stub) { stub_request(:post, ENV['ZEIT_WEBHOOK_URL']) }
+    let!(:stub) { stub_request(:post, ENV['VERCEL_WEBHOOK_URL']) }
 
-    it 'calls ZEIT_WEBHOOK_URL' do
+    it 'calls VERCEL_WEBHOOK_URL' do
       WebMock.reset_executed_requests!
       opening_hour.destroy
       expect(stub).to have_been_requested.once
