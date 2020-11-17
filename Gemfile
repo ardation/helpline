@@ -8,7 +8,7 @@ ruby '2.7.2'
 gem 'activeadmin'
 gem 'activeadmin_addons'
 gem 'acts-as-taggable-on', '~> 6.0'
-gem 'awesome_print'
+gem 'amazing_print'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'charlock_holmes'
 gem 'countries'
@@ -56,3 +56,5 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
+
+gem 'marco-polo'

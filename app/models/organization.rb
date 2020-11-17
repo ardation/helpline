@@ -20,7 +20,7 @@ class Organization < ApplicationRecord
   validates :chat_url, format: { with: URI::DEFAULT_PARSER.make_regexp }, allow_blank: true
   validates :timezone, inclusion: { in: ActiveSupport::TimeZone.all.map(&:name) }, presence: true
   accepts_nested_attributes_for :opening_hours, allow_destroy: true
-  scope :filter_by_country_code, ->(code) { joins(:country).where(countries: { code: code.upcase }) }
+  scope :filter_by_country_code, ->(code) { joins(:country).where('countries.code LIKE ?', "#{code.upcase}%") }
   scope :filter_by_subdivision_codes, lambda { |codes|
     scope = left_outer_joins(:subdivisions)
 
