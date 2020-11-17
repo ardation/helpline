@@ -14,7 +14,7 @@ RSpec.describe Country, type: :model do
   it do
     expect(country).to(
       define_enum_for(:locality)
-        .with_values(state: 'state', county: 'county', province: 'province', location: 'location')
+        .with_values(state: 'state', county: 'county', province: 'province', location: 'location', region: 'region')
         .backed_by_column_of_type(:string)
     )
   end

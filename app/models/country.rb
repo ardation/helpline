@@ -4,7 +4,7 @@ class Country < ApplicationRecord
   SECOND_TIER_COUNTRIES = %w[GB-ENG GB-NIR GB-SCT GB-WLS].freeze
   has_many :organizations, dependent: :destroy
   has_many :subdivisions, dependent: :destroy
-  enum locality: { state: 'state', county: 'county', province: 'province', location: 'location' }
+  enum locality: { state: 'state', county: 'county', province: 'province', location: 'location', region: 'region' }
   validates :locality, presence: true
   validates :code,
             presence: true,
