@@ -10,6 +10,7 @@ RSpec.describe Queries::CountryQuery, type: :query do
         'id' => country.id,
         'name' => country.name,
         'emergencyNumber' => country.emergency_number,
+        'locality' => country.locality.upcase,
         'subdivisions' => match_array(country.subdivisions.map do |t|
           {
             'id' => t.id,
@@ -33,6 +34,7 @@ RSpec.describe Queries::CountryQuery, type: :query do
           id
           name
           emergencyNumber
+          locality
           subdivisions {
             id
             code

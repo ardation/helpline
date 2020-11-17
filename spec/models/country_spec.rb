@@ -7,13 +7,28 @@ RSpec.describe Country, type: :model do
 
   it { is_expected.to have_many(:organizations).dependent(:destroy) }
   it { is_expected.to have_many(:subdivisions).dependent(:destroy) }
+  it { is_expected.to validate_presence_of(:locality) }
   it { is_expected.to validate_presence_of(:code) }
   it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
 
   it do
     expect(country).to(
+      define_enum_for(:locality)
+        .with_values(state: 'state', county: 'county', province: 'province', location: 'location')
+        .backed_by_column_of_type(:string)
+    )
+  end
+
+  it do
+    expect(country).to(
       validate_inclusion_of(:code).in_array(ISO3166::Country.all.map(&:alpha2) + described_class::SECOND_TIER_COUNTRIES)
     )
+  end
+
+  describe '#locality' do
+    it 'returns location by default' do
+      expect(country.locality).to eq 'location'
+    end
   end
 
   describe '#code=' do
