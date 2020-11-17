@@ -11,7 +11,6 @@ RSpec.describe Country::Subdivision, type: :model do
   it { is_expected.to validate_inclusion_of(:code).in_array(subdivision.country.iso_3166_country.subdivisions.keys) }
   it { is_expected.to validate_uniqueness_of(:code).scoped_to(:country_id).case_insensitive }
 
-
   context 'when country is GB-ENG' do
     subject(:subdivision) { build(:country_subdivision, country: country) }
 

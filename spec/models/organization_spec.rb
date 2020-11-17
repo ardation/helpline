@@ -86,13 +86,13 @@ RSpec.describe Organization, type: :model do
       let!(:organization1) do
         create(
           :organization,
-          country: create(:country, code: 'GB'),
+          country: create(:country, code: 'GB')
         )
       end
       let!(:organization2) do
         create(
           :organization,
-          country: create(:country, code: 'GB-SCT'),
+          country: create(:country, code: 'GB-SCT')
         )
       end
 
