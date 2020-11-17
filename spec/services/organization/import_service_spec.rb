@@ -8,7 +8,6 @@ RSpec.describe Organization::ImportService, type: :service do
 
   describe '.import' do
     let(:organization) { Organization.first }
-    let(:opening_hour) { organization.opening_hours.first }
     let(:organization_attributes) do
       {
         'name' => 'Youthline',
@@ -66,7 +65,7 @@ RSpec.describe Organization::ImportService, type: :service do
 
     it 'has the correct opening_hour attributes' do
       described_class.import(import)
-      expect(opening_hour.attributes).to include(opening_hour_attributes)
+      expect(organization.opening_hours.first.attributes).to include(opening_hour_attributes)
     end
 
     context 'when organization already exists with same name and country' do

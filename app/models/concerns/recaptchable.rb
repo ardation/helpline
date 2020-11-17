@@ -6,6 +6,7 @@ module Recaptchable
   included do
     include Recaptcha::Adapters::ControllerMethods
     attr_accessor :recaptcha_token, :remote_ip
+
     validates :recaptcha_token, :remote_ip, presence: true, on: :create
     validate :validate_recaptcha, on: :create
 

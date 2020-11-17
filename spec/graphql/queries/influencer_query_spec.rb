@@ -2,25 +2,19 @@
 
 require 'rails_helper'
 
-RSpec.describe Queries::InfluencerQuery, type: :request do
-  before { host! 'api.example.com' }
-
+RSpec.describe Queries::InfluencerQuery, type: :query do
   let(:influencer) { create(:influencer) }
+  let(:data) do
+    { 'influencer' => {
+      'id' => influencer.id,
+      'name' => influencer.name,
+      'message' => influencer.message
+    } }
+  end
 
-  describe '.resolve' do
-    let(:data) { JSON.parse(response.body)['data']['influencer'] }
-    let(:attributes) do
-      {
-        'id' => influencer.id,
-        'name' => influencer.name,
-        'message' => influencer.message
-      }
-    end
-
-    it 'returns influencer for provided slug' do
-      post '/', params: { query: query(slug: influencer.slug) }
-      expect(data).to include(attributes)
-    end
+  it 'returns influencer' do
+    resolve(query(slug: influencer.slug))
+    expect(response_data).to eq(data), invalid_response_data
   end
 
   def query(slug:)

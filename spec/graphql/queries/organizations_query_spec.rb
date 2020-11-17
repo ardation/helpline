@@ -2,10 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe Queries::OrganizationsQuery, type: :request do
-  before { host! 'api.example.com' }
-
-  let!(:organization_0) do
+RSpec.describe Queries::OrganizationsQuery, type: :query do
+  let!(:organization0) do
     create(
       :organization,
       country: create(:country, code: 'AU'),
@@ -17,8 +15,7 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
     )
   end
   let(:country_nz) { create(:country, code: 'NZ') }
-  let(:subdivision_auk) { create(:country_subdivision, country: country_nz, code: 'AUK') }
-  let!(:organization_1) do
+  let!(:organization1) do
     create(
       :organization,
       country: country_nz,
@@ -27,108 +24,72 @@ RSpec.describe Queries::OrganizationsQuery, type: :request do
       topic_list: ['topic_1']
     )
   end
-  let!(:organization_2) do
+  let!(:organization2) do
     create(
       :organization,
       country: country_nz,
-      subdivisions: [subdivision_auk],
+      subdivisions: [create(:country_subdivision, country: country_nz, code: 'AUK')],
       category_list: ['category_1'],
       human_support_type_list: ['human_support_type_1'],
       topic_list: ['topic_1']
     )
   end
+  let(:ids) { response_data['organizations']['nodes'].map { |organization| organization['id'] } }
 
-  describe '.resolve' do
-    let(:data) { JSON.parse(response.body)['data']['organizations']['nodes'] }
-    let(:attributes_0) { { 'id' => organization_0.id } }
-    let(:attributes_1) { { 'id' => organization_1.id } }
-    let(:attributes_2) { { 'id' => organization_2.id } }
+  it 'returns organizations' do
+    resolve(query)
+    expect(ids).to match_array [organization0.id, organization1.id, organization2.id]
+  end
 
-    it 'returns organizations' do
-      post '/', params: { query: query }
+  it 'returns organizations filtered by country_code' do
+    resolve(query('countryCode: "AU"'))
+    expect(ids).to match_array [organization0.id]
+  end
 
-      expect(data).to match_array [
-        hash_including(attributes_0), hash_including(attributes_1), hash_including(attributes_2)
-      ]
-    end
+  it 'returns organizations filtered by subdivison_codes' do
+    resolve(query('subdivisionCodes: ["AUK"]'))
+    expect(ids).to match_array [organization2.id]
+  end
 
-    it 'returns organizations filtered by country_code' do
-      post '/', params: { query: query('(countryCode: "AU")') }
+  it 'returns organizations filtered by empty subdivison_codes' do
+    resolve(query('countryCode: "NZ", subdivisionCodes: []'))
+    expect(ids).to match_array [organization1.id]
+  end
 
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
+  it 'returns organizations filtered by null subdivison_code and AUK' do
+    resolve(query('countryCode: "NZ", subdivisionCodes: [null, "AUK"]'))
+    expect(ids).to match_array [organization1.id, organization2.id]
+  end
 
-    it 'returns organizations filtered by subdivison_codes' do
-      post '/', params: { query: query('(subdivisionCodes: ["AUK"])') }
+  it 'returns organizations filtered by categories' do
+    resolve(query('categories: ["category_0"]'))
+    expect(ids).to match_array [organization0.id]
+  end
 
-      expect(data).to match_array [
-        hash_including(attributes_2)
-      ]
-    end
+  it 'returns organizations filtered by human_support_type' do
+    resolve(query('humanSupportTypes: ["human_support_type_0"]'))
+    expect(ids).to match_array [organization0.id]
+  end
 
-    it 'returns organizations filtered by empty subdivison_codes' do
-      post '/', params: { query: query('(countryCode: "NZ", subdivisionCodes: [])') }
+  it 'returns organizations filtered by topics' do
+    resolve(query('topics: ["topic_0"]'))
+    expect(ids).to match_array [organization0.id]
+  end
 
-      expect(data).to match_array [
-        hash_including(attributes_1)
-      ]
-    end
+  it 'returns organizations filtered by featured' do
+    resolve(query('featured: true'))
+    expect(ids).to match_array [organization0.id]
+  end
 
-    it 'returns organizations filtered by null subdivison_code and AUK' do
-      post '/', params: { query: query('(countryCode: "NZ", subdivisionCodes: [null, "AUK"])') }
-
-      expect(data).to match_array [
-        hash_including(attributes_1), hash_including(attributes_2)
-      ]
-    end
-
-    it 'returns organizations filtered by categories' do
-      post '/', params: { query: query('(categories: ["category_0"])') }
-
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
-
-    it 'returns organizations filtered by human_support_type' do
-      post '/', params: { query: query('(humanSupportTypes: ["human_support_type_0"])') }
-
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
-
-    it 'returns organizations filtered by topics' do
-      post '/', params: { query: query('(topics: ["topic_0"])') }
-
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
-
-    it 'returns organizations filtered by featured' do
-      post '/', params: { query: query('(featured: true)') }
-
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
-
-    it 'returns organizations filtered by verified' do
-      post '/', params: { query: query('(verified: true)') }
-
-      expect(data).to match_array [
-        hash_including(attributes_0)
-      ]
-    end
+  it 'returns organizations filtered by verified' do
+    resolve(query('verified: true'))
+    expect(ids).to match_array [organization0.id]
   end
 
   def query(filter = '')
     <<~GQL
       query {
-        organizations#{filter} {
+        organizations#{filter.present? ? "(#{filter})" : ''} {
           nodes {
             id
           }

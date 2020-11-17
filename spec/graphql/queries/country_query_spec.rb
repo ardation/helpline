@@ -2,15 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe Queries::CountryQuery, type: :request do
-  before { host! 'api.example.com' }
-
+RSpec.describe Queries::CountryQuery, type: :query do
   let(:country) { create(:country, :complete) }
-
-  describe '.resolve' do
-    let(:data) { JSON.parse(response.body)['data']['country'] }
-    let(:attributes) do
-      {
+  let(:data) do
+    {
+      'country' => {
         'id' => country.id,
         'name' => country.name,
         'emergencyNumber' => country.emergency_number,
@@ -22,12 +18,12 @@ RSpec.describe Queries::CountryQuery, type: :request do
           }
         end)
       }
-    end
+    }
+  end
 
-    it 'returns country for provided code' do
-      post '/', params: { query: query(code: country.code) }
-      expect(data).to include(attributes)
-    end
+  it 'returns categories' do
+    resolve(query(code: country.code))
+    expect(response_data).to include(data), invalid_response_data
   end
 
   def query(code:)

@@ -2,21 +2,17 @@
 
 require 'rails_helper'
 
-RSpec.describe Queries::TopicsQuery, type: :request do
+RSpec.describe Queries::TopicsQuery, type: :query do
   before do
-    host! 'api.example.com'
     create(:organization, topic_list: ['topic_def'])
     create(:organization, topic_list: ['topic_abc'])
   end
 
-  describe '.resolve' do
-    let(:data) { JSON.parse(response.body)['data']['topics'] }
+  let(:data) { { 'topics' => [{ 'name' => 'topic_abc' }, { 'name' => 'topic_def' }] } }
 
-    it 'returns topics' do
-      post '/', params: { query: query }
-
-      expect(data).to eq [{ 'name' => 'topic_abc' }, { 'name' => 'topic_def' }]
-    end
+  it 'returns topics' do
+    resolve(query)
+    expect(response_data).to eq(data), invalid_response_data
   end
 
   def query

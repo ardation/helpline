@@ -39,7 +39,7 @@ RSpec.describe Organization, type: :model do
   end
 
   context 'when .filter_by_*' do
-    let!(:organization_0) do
+    let!(:organization0) do
       create(
         :organization,
         country: create(:country, code: 'AU'),
@@ -52,7 +52,7 @@ RSpec.describe Organization, type: :model do
     end
     let(:country_nz) { create(:country, code: 'NZ') }
     let(:subdivision_auk) { create(:country_subdivision, country: country_nz, code: 'AUK') }
-    let!(:organization_1) do
+    let!(:organization1) do
       create(
         :organization,
         country: country_nz,
@@ -61,7 +61,7 @@ RSpec.describe Organization, type: :model do
         topic_list: ['topic_1']
       )
     end
-    let!(:organization_2) do
+    let!(:organization2) do
       create(
         :organization,
         country: country_nz,
@@ -74,101 +74,101 @@ RSpec.describe Organization, type: :model do
 
     describe '.filter_by_country_code' do
       it 'returns organizations' do
-        expect(described_class.filter_by_country_code('nz')).to match_array [organization_1, organization_2]
+        expect(described_class.filter_by_country_code('nz')).to match_array [organization1, organization2]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(country_code: 'nz')).to match_array [organization_1, organization_2]
+        expect(described_class.filter(country_code: 'nz')).to match_array [organization1, organization2]
       end
     end
 
     describe '.filter_by_subdivison_codes' do
       it 'returns organizations' do
-        expect(described_class.filter_by_subdivision_codes(['auk'])).to match_array [organization_2]
+        expect(described_class.filter_by_subdivision_codes(['auk'])).to match_array [organization2]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(subdivision_codes: ['auk'])).to match_array [organization_2]
+        expect(described_class.filter(subdivision_codes: ['auk'])).to match_array [organization2]
       end
 
       it 'returns organizations when empty' do
         expect(
           described_class.filter_by_country_code('nz').filter_by_subdivision_codes([])
-        ).to match_array [organization_1]
+        ).to match_array [organization1]
       end
 
       it 'returns organizations when nil' do
         expect(
           described_class.filter_by_country_code('nz').filter_by_subdivision_codes([nil])
-        ).to match_array [organization_1]
+        ).to match_array [organization1]
       end
 
       it 'returns national organizations and subdivision organizations when nil present' do
         expect(
           described_class.filter_by_country_code('nz').filter_by_subdivision_codes([nil, 'auk'])
-        ).to match_array [organization_1, organization_2]
+        ).to match_array [organization1, organization2]
       end
 
       it 'allows use by filter when empty' do
-        expect(described_class.filter(country_code: 'nz', subdivision_codes: [])).to match_array [organization_1]
+        expect(described_class.filter(country_code: 'nz', subdivision_codes: [])).to match_array [organization1]
       end
     end
 
     describe '.filter_by_categories' do
       it 'returns organizations' do
-        expect(described_class.filter_by_categories(['category_0'])).to match_array [organization_0]
+        expect(described_class.filter_by_categories(['category_0'])).to match_array [organization0]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(categories: ['category_0'])).to match_array [organization_0]
+        expect(described_class.filter(categories: ['category_0'])).to match_array [organization0]
       end
     end
 
     describe '.filter_by_human_support_type' do
       it 'returns organizations' do
-        expect(described_class.filter_by_human_support_types(['human_support_type_0'])).to match_array [organization_0]
+        expect(described_class.filter_by_human_support_types(['human_support_type_0'])).to match_array [organization0]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(human_support_types: ['human_support_type_0'])).to match_array [organization_0]
+        expect(described_class.filter(human_support_types: ['human_support_type_0'])).to match_array [organization0]
       end
     end
 
     describe '.filter_by_topics' do
       it 'returns organizations' do
-        expect(described_class.filter_by_topics(['topic_0'])).to match_array [organization_0]
+        expect(described_class.filter_by_topics(['topic_0'])).to match_array [organization0]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(topics: ['topic_0'])).to match_array [organization_0]
+        expect(described_class.filter(topics: ['topic_0'])).to match_array [organization0]
       end
     end
 
     describe '.filter_by_featured' do
       it 'returns organizations when true' do
-        expect(described_class.filter_by_featured(true)).to match_array [organization_0]
+        expect(described_class.filter_by_featured(true)).to match_array [organization0]
       end
 
       it 'returns organizations when false' do
-        expect(described_class.filter_by_featured(false)).to match_array [organization_1, organization_2]
+        expect(described_class.filter_by_featured(false)).to match_array [organization1, organization2]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(featured: true)).to match_array [organization_0]
+        expect(described_class.filter(featured: true)).to match_array [organization0]
       end
     end
 
     describe '.filter_by_verified' do
       it 'returns organizations when true' do
-        expect(described_class.filter_by_verified(true)).to match_array [organization_0]
+        expect(described_class.filter_by_verified(true)).to match_array [organization0]
       end
 
       it 'returns organizations when false' do
-        expect(described_class.filter_by_verified(false)).to match_array [organization_1, organization_2]
+        expect(described_class.filter_by_verified(false)).to match_array [organization1, organization2]
       end
 
       it 'allows use by filter' do
-        expect(described_class.filter(verified: true)).to match_array [organization_0]
+        expect(described_class.filter(verified: true)).to match_array [organization0]
       end
     end
   end
