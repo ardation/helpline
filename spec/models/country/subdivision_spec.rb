@@ -27,13 +27,13 @@ RSpec.describe Country::Subdivision, type: :model do
       expect(subdivision.name).to eq 'Alabama'
     end
 
-    context 'when country NZ and subdivision is CIT' do
-      subject(:subdivision) { build(:country_subdivision, country: country, code: 'CIT') }
+    context 'when country IE and subdivision is L' do
+      subject(:subdivision) { build(:country_subdivision, country: country, code: 'L') }
 
-      let(:country) { build(:country, code: 'NZ') }
+      let(:country) { build(:country, code: 'IE') }
 
       it 'returns code' do
-        expect(subdivision.name).to eq 'CIT'
+        expect(subdivision.name).to eq 'Leinster'
       end
     end
   end
