@@ -4,6 +4,8 @@ class Country < ApplicationRecord
   SECOND_TIER_COUNTRIES = %w[GB-ENG GB-NIR GB-SCT GB-WLS].freeze
   has_many :organizations, dependent: :destroy
   has_many :subdivisions, dependent: :destroy
+  enum locality: { state: 'state', county: 'county', province: 'province', location: 'location' }
+  validates :locality, presence: true
   validates :code,
             presence: true,
             inclusion: { in: ISO3166::Country.all.map(&:alpha2) + SECOND_TIER_COUNTRIES },
