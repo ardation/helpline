@@ -82,6 +82,29 @@ RSpec.describe Organization, type: :model do
       end
     end
 
+    describe '.filter_by_country_code when second tier country' do
+      let!(:organization1) do
+        create(
+          :organization,
+          country: create(:country, code: 'GB')
+        )
+      end
+      let!(:organization2) do
+        create(
+          :organization,
+          country: create(:country, code: 'GB-SCT')
+        )
+      end
+
+      it 'returns organizations' do
+        expect(described_class.filter_by_country_code('gb')).to match_array [organization1, organization2]
+      end
+
+      it 'allows use by filter' do
+        expect(described_class.filter(country_code: 'gb')).to match_array [organization1, organization2]
+      end
+    end
+
     describe '.filter_by_subdivison_codes' do
       it 'returns organizations' do
         expect(described_class.filter_by_subdivision_codes(['auk'])).to match_array [organization2]
