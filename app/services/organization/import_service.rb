@@ -39,7 +39,7 @@ class Organization
 
     def build_organization(name, country_code, subdivision_codes, remote_id)
       country = Country.find_or_create_by(code: country_code&.upcase)
-      subdivisions = find_subdivisions(country, subdivision_codes)
+      subdivisions = find_subdivisions(country, subdivision_codes) if country.persisted?
       organization = find_organization(name, country, remote_id)
       organization ||= Organization.new(name: name)
       organization.country = country if country.persisted?
