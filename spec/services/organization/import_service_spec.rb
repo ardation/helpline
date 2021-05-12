@@ -98,8 +98,9 @@ RSpec.describe Organization::ImportService, type: :service do
       let(:csv) { file_fixture('services/organization/import_service/invalid_organization.csv') }
 
       it 'returns error as string' do
-        expect(described_class.import(import)).to match(
-          /Row 1: Country must exist, Name can't be blank/
+        expect(described_class.import(import)).to include(
+          "Row 1: Country must exist, Opening hours close can't be blank, Opening hours open can't be blank, "\
+          "Name can't be blank"
         )
       end
     end

@@ -83,9 +83,15 @@ class Organization
 
       organization.opening_hours.build(
         day: day,
-        open: DateTime.parse(attributes["#{day}_open"]),
-        close: DateTime.parse(attributes["#{day}_close"])
+        open: safe_date_time_parse(attributes["#{day}_open"]),
+        close: safe_date_time_parse(attributes["#{day}_close"])
       )
+    end
+
+    def safe_date_time_parse(string)
+      DateTime.parse(string)
+    rescue Date::Error
+      nil
     end
   end
 end

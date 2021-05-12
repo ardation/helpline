@@ -26,6 +26,7 @@ gem 'rails-observers'
 gem 'recaptcha'
 gem 'redis'
 gem 'rollbar'
+gem 'sass-rails'
 gem 'sidekiq'
 
 group :test do
