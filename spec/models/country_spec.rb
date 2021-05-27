@@ -45,6 +45,14 @@ RSpec.describe Country, type: :model do
       expect(country.name).to eq 'United States'
     end
 
+    context 'when code is XK' do
+      subject(:country) { build(:country, code: 'XK') }
+
+      it 'returns code as country name' do
+        expect(country.name).to eq 'Kosovo'
+      end
+    end
+
     context 'when code is GB-ENG' do
       subject(:country) { build(:country, code: 'GB-ENG') }
 
