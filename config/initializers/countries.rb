@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ISO3166::Data.register(
   alpha2: 'XK',
   alpha3: 'XKX',
