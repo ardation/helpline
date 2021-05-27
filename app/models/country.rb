@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Country < ApplicationRecord
-  SECOND_TIER_COUNTRIES = %w[GB-ENG GB-NIR GB-SCT GB-WLS].freeze
+  SECOND_TIER_COUNTRIES = %w[GB-ENG GB-NIR GB-SCT GB-WLS RS-25].freeze
   has_many :organizations, dependent: :destroy
   has_many :subdivisions, dependent: :destroy
   enum locality: { state: 'state', county: 'county', province: 'province', location: 'location', region: 'region' }
