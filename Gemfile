@@ -7,7 +7,7 @@ ruby '2.7.2'
 
 gem 'activeadmin'
 gem 'activeadmin_addons'
-gem 'acts-as-taggable-on', '~> 6.0'
+gem 'acts-as-taggable-on', '~> 8.1'
 gem 'amazing_print'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'charlock_holmes'
