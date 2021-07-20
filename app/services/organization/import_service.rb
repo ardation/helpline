@@ -20,7 +20,9 @@ class Organization
         organization = build_organization_from_row(row)
         update_opening_hours_from_row(row, organization)
 
-        errors << "Row #{index}: #{organization.errors.full_messages.join(', ')}" unless organization.save
+        organization.save!
+      rescue ActiveRecord::RecordInvalid => e
+        errors << "Row #{index}: #{format_error_message(e.message)}"
       end
       return "CSV imported with some errors! \n#{errors.join("\n")}" if errors.present?
     end
@@ -49,7 +51,7 @@ class Organization
 
     def find_subdivisions(country, subdivision_codes)
       country && subdivision_codes&.split(',')&.map do |subdivision_code|
-        country.subdivisions.find_or_create_by(code: subdivision_code&.upcase)
+        country.subdivisions.find_or_create_by!(code: subdivision_code&.upcase)
       end
     end
 
@@ -92,6 +94,12 @@ class Organization
       DateTime.parse(string)
     rescue Date::Error
       nil
+    end
+
+    def format_error_message(message)
+      message
+        .remove('Validation failed: ')
+        .gsub('Code is not included in the list', 'Subdivision code is invalid')
     end
   end
 end

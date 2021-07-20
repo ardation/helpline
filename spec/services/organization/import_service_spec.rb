@@ -113,5 +113,19 @@ RSpec.describe Organization::ImportService, type: :service do
         expect(organization.always_open).to eq(true)
       end
     end
+
+    context 'when csv row has invalid subdomains and organization exists' do
+      before do
+        create(:organization, name: 'Next Link Helpline', country: create(:country, code: 'GB-ENG'), remote_id: '12195')
+      end
+
+      let(:csv) { file_fixture('services/organization/import_service/invalid_organization_subdivision_codes.csv') }
+
+      it 'returns error as string' do
+        expect(described_class.import(import)).to include(
+          'Row 1: Subdivision code is invalid'
+        )
+      end
+    end
   end
 end
